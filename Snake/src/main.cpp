@@ -7,6 +7,7 @@
 #include "Snake.h"
 #include "DisplayText.h"
 #include "Constants.h"
+#include "Score.h"
 #include "Clang.h"
 
 
@@ -77,9 +78,7 @@ int main()
     Snake snake(Const::CellSize * (Const::BoardWidth / 2), Const::CellSize * (Const::BoardHeight / 2));
     Rectangle apple = GetApple(snake);
 
-    uint32_t score = 0;
-    DisplayText scoreTxt(score, Const::ScoreFontSize, DARKGREEN);
-    scoreTxt.CenterX(Const::WindowWidth);
+    Score score;
 
     bool finished = false;
     DisplayText doneTxt("Failed!", Const::DoneFontSize, RED);
@@ -105,8 +104,6 @@ int main()
             else
                 apple = GetApple(snake);
             ++score;
-            scoreTxt.Update(score);
-            scoreTxt.CenterX(Const::WindowWidth);
         }
 
         BeginDrawing();
@@ -127,7 +124,7 @@ int main()
         }
         DrawRectangleRec(apple, RED);
         snake.Draw();
-        scoreTxt.Draw();
+        score.Draw();
         if (finished)
             doneTxt.Draw();
         DrawFPS(0, 0);
@@ -140,8 +137,6 @@ int main()
         
             // reset score
             score = 0;
-            scoreTxt.Update(score);
-            scoreTxt.CenterX(Const::WindowWidth);
         
             // reset finished string
             doneTxt.Update("Failed!");
