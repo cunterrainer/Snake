@@ -7,19 +7,15 @@
 #include "Snake.h"
 #include "Constants.h"
 
-
 /*
     For some reason clang preferably links against main() if available even though the build
     settings would link against WinMain().
-    However in order to link against WinMain() I created this macro. Although I'm not entirely
-    sure why it works in the first place since this isn't a proper decleration of the WinMain()
-    function according to Microsofts standard because of missing parameters.
-    But still it works (for now at least)
+    However in order to link against WinMain() I created this macro.
     GCC & MSVC properly link against WinMain().
     Premake will define all these macros for you if you select clang as compiler.
 */
 #if defined CLANG && defined RELEASE && defined WINDOWS
-    #define main() WinMain()
+    #define main() WinMain([[maybe_unused]]void* hInst, [[maybe_unused]]void* hInstPrev, [[maybe_unused]]char* cmdline, [[maybe_unused]]int cmdshow)
 #endif
 
 
@@ -186,7 +182,7 @@ int main()
             finished = false;
         }
     }
-
-    CloseWindow();
+    
+    TerminateWindow();
     return 0;
 }
