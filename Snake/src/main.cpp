@@ -71,7 +71,7 @@ inline Rectangle GetApple(const Snake& snake)
 
 int main()
 {
-    constexpr std::array<Rectangle, Const::GridSize> grid = GenerateGrid();
+    static constexpr std::array<Rectangle, Const::GridSize> grid = GenerateGrid();
     InitWindow(Const::WindowWidth, Const::WindowHeight, Const::WindowTitle);
     SetTargetFPS(Const::TargetFPS);
     SetExitKey(KEY_NULL);
