@@ -9,8 +9,7 @@ class DisplayText
 {
 private:
     std::string m_Text;
-    int m_XPos = 0;
-    int m_YPos = 0;
+    Vector2 m_Pos{0, 0};
     int m_FontSize;
     Color m_Color;
 public:
@@ -20,18 +19,18 @@ public:
     inline void CenterX(uint16_t windowWidth)
     {
         const int textLength = MeasureText(m_Text.c_str(), m_FontSize);
-        m_XPos = static_cast<int>(static_cast<float>(windowWidth) / 2.f - static_cast<float>(textLength) / 2.f);
+        m_Pos.x = static_cast<float>(windowWidth) / 2.f - static_cast<float>(textLength) / 2.f;
     }
 
 
     inline void CenterY(uint16_t windowHeight)
     {
-        m_YPos = static_cast<int>(static_cast<float>(windowHeight) / 2.f - static_cast<float>(m_FontSize) / 2.f);
+        m_Pos.y = static_cast<float>(windowHeight) / 2.f - static_cast<float>(m_FontSize) / 2.f;
     }
 
 
-    inline void SetY(int y) { m_YPos = y; }
-    inline int  GetY() const { return m_YPos; }
+    inline void  SetY(float y) { m_Pos.y = y; }
+    inline float GetY() const { return m_Pos.y; }
     inline void Center(uint16_t windowWidth, uint16_t windowHeight) { CenterX(windowWidth); CenterY(windowHeight); }
     inline void Update(const std::string_view& str) { m_Text = str; }
     inline void Update(uint32_t val) { Update(std::to_string(val)); }
@@ -42,6 +41,11 @@ public:
 
     inline void Draw() const
     {
-        DrawText(m_Text.c_str(), m_XPos, m_YPos, m_FontSize, m_Color);
+        int fontSize = m_FontSize;
+        int defaultFontSize = 10;   // Default Font chars height in pixel
+        if (fontSize < defaultFontSize) fontSize = defaultFontSize;
+        int spacing = fontSize / defaultFontSize;
+
+        DrawTextEx(GetFontDefault(), m_Text.c_str(), m_Pos, (float)fontSize, (float)spacing, m_Color);
     }
 };
