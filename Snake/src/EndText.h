@@ -26,7 +26,7 @@ public:
     { 
         static float alpha = 255.f;
         static float diff = 0.f;
-        static int yOffset = 0;
+        static float yOffset = 0.f;
         diff += Const::EndTextFadingDiffMP * dt;
 
         bool faded = false;
@@ -38,19 +38,16 @@ public:
 
             if (faded)
             {
-                yOffset = 0;
+                yOffset = 0.f;
                 alpha = 255.f;
             }
             else
-            {
-                yOffset += static_cast<int>(1.f * diff);
-                std::cout << yOffset << std::endl;
-                m_Text.SetY(m_Text.GetY() - yOffset);
-            }
+                yOffset += diff / Const::EndTextYOffsetDenom;
 
             diff = 0.f;
             c.a = static_cast<unsigned char>(alpha);
             UpdateText(m_Text.GetText(), c);
+            m_Text.SetY(m_Text.GetY() - yOffset);
         }
         return faded;
     }

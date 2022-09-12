@@ -73,7 +73,7 @@ int main()
 {
     static constexpr std::array<Rectangle, Const::GridSize> grid = GenerateGrid();
     InitWindow(Const::WindowWidth, Const::WindowHeight, Const::WindowTitle);
-    //SetTargetFPS(Const::TargetFPS);
+    SetTargetFPS(Const::TargetFPS);
     SetExitKey(KEY_NULL);
 
     Snake snake(Const::CellSize * (Const::BoardWidth / 2), Const::CellSize * (Const::BoardHeight / 2));
