@@ -5,6 +5,7 @@
 #include "raylib.h"
 
 #include "Snake.h"
+#include "EndText.h"
 #include "DisplayText.h"
 #include "Constants.h"
 #include "Score.h"
@@ -79,10 +80,8 @@ int main()
     Rectangle apple = GetApple(snake);
 
     Score score;
-
+    EndText doneTxt;
     bool finished = false;
-    DisplayText doneTxt("Failed!", Const::DoneFontSize, RED);
-    doneTxt.Center(Const::WindowWidth, Const::WindowHeight);
 
     while (!WindowShouldClose())
     {
@@ -93,9 +92,7 @@ int main()
         {
             if (!snake.Append())
             {
-                doneTxt.Update("Won!");
-                doneTxt.Update(GOLD);
-                doneTxt.Center(Const::WindowWidth, Const::WindowHeight);
+                doneTxt.SetWin();
 
                 apple.x = Const::AppleWinOffset;
                 apple.y = Const::AppleWinOffset;
@@ -125,8 +122,7 @@ int main()
         DrawRectangleRec(apple, RED);
         snake.Draw();
         score.Draw();
-        if (finished)
-            doneTxt.Draw();
+        doneTxt.Draw(finished);
         DrawFPS(0, 0);
         EndDrawing();
 
@@ -134,14 +130,9 @@ int main()
         {
             snake.Reset();
             apple = GetApple(snake);
-        
-            // reset score
+   
             score = 0;
-        
-            // reset finished string
-            doneTxt.Update("Failed!");
-            doneTxt.Update(RED);
-            doneTxt.Center(Const::WindowWidth, Const::WindowHeight);
+            doneTxt.SetDefeat();
 
             finished = false;
         }
