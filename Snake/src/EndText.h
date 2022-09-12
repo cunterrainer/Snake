@@ -20,8 +20,8 @@ public:
         m_Text.Center(Const::WindowWidth, Const::WindowHeight);
     }
 
-    inline void SetWin()    { UpdateText("Won!", GOLD); }
-    inline void SetDefeat() { UpdateText("Failed!", RED); }
+    inline void SetWin() { UpdateText("Won!", GOLD); }
+    inline void Reset()  { UpdateText("Failed!", RED); }
 
     inline void Draw(bool done) const 
     { 

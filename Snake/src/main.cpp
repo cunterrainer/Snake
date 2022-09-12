@@ -132,7 +132,7 @@ int main()
             apple = GetApple(snake);
    
             score = 0;
-            doneTxt.SetDefeat();
+            doneTxt.Reset();
 
             finished = false;
         }
