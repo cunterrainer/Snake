@@ -24,29 +24,35 @@ public:
     inline void SetWin() { UpdateText("Won!", GOLD); }
     inline bool Reset(float dt)  
     { 
-        static float alpha = 255;
+        static float alpha = 255.f;
         static float diff = 0.f;
-        float d = 5.f;
-        diff += 500 * dt;
+        static int yOffset = 0;
+        diff += Const::EndTextFadingDiffMP * dt;
 
-        if (alpha <= 0.f) // faded
-        {
-            alpha = 255.f+d;
-            diff = 0.f;
-            Color c = m_Text.GetColor();
-            c.a = 255;
-            UpdateText(m_Text.GetText(), c);
-            return true;
-        }
-        if(diff >= d)
+        bool faded = false;
+        if(diff >= Const::EndTextFadingStep)
         {
             alpha -= diff;
-            diff = 0.f;
+            faded = alpha <= 0.f;
             Color c = m_Text.GetColor();
-            c.a = alpha <= 0.f ? 0 : static_cast<unsigned char>(alpha);
+
+            if (faded)
+            {
+                yOffset = 0;
+                alpha = 255.f;
+            }
+            else
+            {
+                yOffset += static_cast<int>(1.f * diff);
+                std::cout << yOffset << std::endl;
+                m_Text.SetY(m_Text.GetY() - yOffset);
+            }
+
+            diff = 0.f;
+            c.a = static_cast<unsigned char>(alpha);
             UpdateText(m_Text.GetText(), c);
         }
-        return false;
+        return faded;
     }
 
 

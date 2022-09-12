@@ -30,6 +30,8 @@ public:
     }
 
 
+    inline void SetY(int y) { m_YPos = y; }
+    inline int  GetY() const { return m_YPos; }
     inline void Center(uint16_t windowWidth, uint16_t windowHeight) { CenterX(windowWidth); CenterY(windowHeight); }
     inline void Update(const std::string_view& str) { m_Text = str; }
     inline void Update(uint32_t val) { Update(std::to_string(val)); }

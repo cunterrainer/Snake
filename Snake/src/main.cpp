@@ -73,7 +73,7 @@ int main()
 {
     static constexpr std::array<Rectangle, Const::GridSize> grid = GenerateGrid();
     InitWindow(Const::WindowWidth, Const::WindowHeight, Const::WindowTitle);
-    SetTargetFPS(Const::TargetFPS);
+    //SetTargetFPS(Const::TargetFPS);
     SetExitKey(KEY_NULL);
 
     Snake snake(Const::CellSize * (Const::BoardWidth / 2), Const::CellSize * (Const::BoardHeight / 2));
@@ -124,6 +124,9 @@ int main()
         DrawRectangleRec(apple, RED);
         snake.Draw();
         score.Draw();
+        doneTxt.Draw(finished);
+        DrawFPS(0, 0);
+        EndDrawing();
 
         if (finished && GetKeyPressed() == KEY_SPACE)
         {
@@ -138,9 +141,6 @@ int main()
             reset = false;
             finished = false;
         }
-        doneTxt.Draw(finished);
-        DrawFPS(0, 0);
-        EndDrawing();
     }
     
     TerminateWindow();
