@@ -8,12 +8,16 @@
 class DisplayText
 {
 private:
+    static constexpr int s_DefaultFontSize = 10;
+private:
     std::string m_Text;
     Vector2 m_Pos{0, 0};
     int m_FontSize;
+    int m_Spacing;
     Color m_Color;
 public:
-    DisplayText(const std::string& text, int fontSize, const Color& color) : m_Text(text), m_FontSize(fontSize), m_Color(color) {}
+    DisplayText(const std::string& text, int fontSize, const Color& color) 
+        : m_Text(text), m_FontSize(fontSize < s_DefaultFontSize ? s_DefaultFontSize : fontSize), m_Spacing(m_FontSize / s_DefaultFontSize), m_Color(color) {}
     DisplayText(uint32_t value, int fontSize, const Color& color) : DisplayText(std::to_string(value), fontSize, color) {}
 
     inline void CenterX(uint16_t windowWidth)
@@ -41,11 +45,6 @@ public:
 
     inline void Draw() const
     {
-        int fontSize = m_FontSize;
-        int defaultFontSize = 10;   // Default Font chars height in pixel
-        if (fontSize < defaultFontSize) fontSize = defaultFontSize;
-        int spacing = fontSize / defaultFontSize;
-
-        DrawTextEx(GetFontDefault(), m_Text.c_str(), m_Pos, (float)fontSize, (float)spacing, m_Color);
+        DrawTextEx(GetFontDefault(), m_Text.c_str(), m_Pos, static_cast<float>(m_FontSize), static_cast<float>(m_Spacing), m_Color);
     }
 };
