@@ -5,6 +5,7 @@
 #include "raylib.h"
 
 #include "Snake.h"
+#include "DisplayText.h"
 #include "Constants.h"
 #include "Clang.h"
 
@@ -28,12 +29,6 @@ constexpr std::array<Rectangle, Const::GridSize> GenerateGrid()
     }
     return grid;
 }
-
-
-//int GetApplePos(int cells);
-//Rectangle GetApple(const Snake& snake);
-//int GetCenterXPosText(const std::string& text, int fontSize, uint16_t width);
-//int GetCenterYPosText(int fontSize, uint16_t height);
 
 
 inline int GetApplePos(int cells)
@@ -72,19 +67,6 @@ inline Rectangle GetApple(const Snake& snake)
 }
 
 
-inline int GetCenterXPosText(const std::string& text, int fontSize, uint16_t width)
-{
-    const int textLength = MeasureText(text.c_str(), fontSize);
-    return static_cast<int>(static_cast<float>(width) / 2.f - static_cast<float>(textLength) / 2.f);
-}
-
-
-inline int GetCenterYPosText(int fontSize, uint16_t height)
-{
-    return static_cast<int>(static_cast<float>(height) / 2.f - static_cast<float>(fontSize) / 2.f);
-}
-
-
 int main()
 {
     constexpr std::array<Rectangle, Const::GridSize> grid = GenerateGrid();
@@ -95,15 +77,13 @@ int main()
     Snake snake(Const::CellSize * (Const::BoardWidth / 2), Const::CellSize * (Const::BoardHeight / 2));
     Rectangle apple = GetApple(snake);
 
-    uint16_t score = 0;
-    std::string scoreStr = std::to_string(static_cast<int>(score));
-    int scoreTextPosX = GetCenterXPosText(scoreStr, Const::ScoreFontSize, Const::WindowWidth);
+    uint32_t score = 0;
+    DisplayText scoreTxt(score, Const::ScoreFontSize, DARKGREEN);
+    scoreTxt.CenterX(Const::WindowWidth);
 
     bool finished = false;
-    std::string finishStr = "Failed!";
-    int finishTextPosX = GetCenterXPosText(finishStr, Const::DoneFontSize, Const::WindowWidth);
-    int finishTextPosY = GetCenterYPosText(Const::DoneFontSize, Const::WindowHeight);
-    Color finishTextColor = RED;
+    DisplayText doneTxt("Failed!", Const::DoneFontSize, RED);
+    doneTxt.Center(Const::WindowWidth, Const::WindowHeight);
 
     while (!WindowShouldClose())
     {
@@ -114,10 +94,9 @@ int main()
         {
             if (!snake.Append())
             {
-                finishStr = "Won!";
-                finishTextPosX = GetCenterXPosText(finishStr, Const::DoneFontSize, Const::WindowWidth);
-                finishTextPosY = GetCenterYPosText(Const::DoneFontSize, Const::WindowHeight);
-                finishTextColor = GOLD;
+                doneTxt.Update("Won!");
+                doneTxt.Update(GOLD);
+                doneTxt.Center(Const::WindowWidth, Const::WindowHeight);
 
                 apple.x = Const::AppleWinOffset;
                 apple.y = Const::AppleWinOffset;
@@ -126,8 +105,8 @@ int main()
             else
                 apple = GetApple(snake);
             ++score;
-            scoreStr = std::to_string(static_cast<int>(score));
-            scoreTextPosX = GetCenterXPosText(scoreStr, Const::ScoreFontSize, Const::WindowWidth);
+            scoreTxt.Update(score);
+            scoreTxt.CenterX(Const::WindowWidth);
         }
 
         BeginDrawing();
@@ -148,9 +127,9 @@ int main()
         }
         DrawRectangleRec(apple, RED);
         snake.Draw();
-        DrawText(scoreStr.c_str(), scoreTextPosX, 0, Const::ScoreFontSize, DARKGREEN);
-        if(finished)
-            DrawText(finishStr.c_str(), finishTextPosX, finishTextPosY, Const::DoneFontSize, finishTextColor);
+        scoreTxt.Draw();
+        if (finished)
+            doneTxt.Draw();
         DrawFPS(0, 0);
         EndDrawing();
 
@@ -161,15 +140,14 @@ int main()
         
             // reset score
             score = 0;
-            scoreStr = std::to_string(static_cast<int>(score));
-            scoreTextPosX = GetCenterXPosText(scoreStr, Const::ScoreFontSize, Const::WindowWidth);
+            scoreTxt.Update(score);
+            scoreTxt.CenterX(Const::WindowWidth);
         
             // reset finished string
-            finishStr = "Failed!";
-            finishTextPosX = GetCenterXPosText(finishStr, Const::DoneFontSize, Const::WindowWidth);
-            finishTextPosY = GetCenterYPosText(Const::DoneFontSize, Const::WindowHeight);
-            finishTextColor = RED;
-        
+            doneTxt.Update("Failed!");
+            doneTxt.Update(RED);
+            doneTxt.Center(Const::WindowWidth, Const::WindowHeight);
+
             finished = false;
         }
     }
