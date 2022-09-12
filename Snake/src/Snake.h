@@ -120,8 +120,8 @@ public:
         m_Parts.clear();
         m_Parts.push_back(CreatePart(m_XStart, m_YStart));
         m_OldParts = m_Parts;
-        m_LastValidPressedKey = 0;
-        m_LastPressedKey = 0;
+        m_LastValidPressedKey = KEY_NULL;
+        m_LastPressedKey = KEY_NULL;
     }
 
 
@@ -139,7 +139,7 @@ public:
         elapsedTime += deltaTime;
 
         const int keyPressed = GetKeyPressed();
-        m_LastPressedKey = keyPressed == 0 ? m_LastPressedKey : keyPressed;
+        m_LastPressedKey = keyPressed == KEY_NULL ? m_LastPressedKey : keyPressed;
         
         if (elapsedTime >= Const::MoveDeltaTimeLimit)
         {
