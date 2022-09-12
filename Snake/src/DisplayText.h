@@ -34,6 +34,8 @@ public:
     inline void Update(const std::string_view& str) { m_Text = str; }
     inline void Update(uint32_t val) { Update(std::to_string(val)); }
     inline void Update(const Color& color) { m_Color = color; }
+    inline const std::string& GetText() const { return m_Text; }
+    inline const Color& GetColor() const { return m_Color; }
 
 
     inline void Draw() const

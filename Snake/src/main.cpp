@@ -82,10 +82,12 @@ int main()
     Score score;
     EndText doneTxt;
     bool finished = false;
+    bool reset = false;
 
     while (!WindowShouldClose())
     {
-        if (!finished && snake.HandleInput(GetFrameTime()))
+        const float deltaTime = GetFrameTime();
+        if (!finished && snake.HandleInput(deltaTime))
             finished = true;
 
         if (!finished && CheckCollisionRecs(apple, snake.GetHead()))
@@ -122,9 +124,6 @@ int main()
         DrawRectangleRec(apple, RED);
         snake.Draw();
         score.Draw();
-        doneTxt.Draw(finished);
-        DrawFPS(0, 0);
-        EndDrawing();
 
         if (finished && GetKeyPressed() == KEY_SPACE)
         {
@@ -132,10 +131,16 @@ int main()
             apple = GetApple(snake);
    
             score = 0;
-            doneTxt.Reset();
-
+            reset = true;
+        }
+        if (reset && doneTxt.Reset(deltaTime))
+        {
+            reset = false;
             finished = false;
         }
+        doneTxt.Draw(finished);
+        DrawFPS(0, 0);
+        EndDrawing();
     }
     
     TerminateWindow();

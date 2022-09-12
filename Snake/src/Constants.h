@@ -13,7 +13,7 @@ namespace Const {
     inline constexpr uint16_t WindowWidth   = BoardWidth * CellSize;
     inline constexpr uint16_t WindowHeight  = BoardHeight * CellSize;
     inline constexpr float_t  GridOutlineThickness = 0.5f;
-    inline constexpr float_t  MoveDeltaTimeLimit   = 0.15f;
+    inline constexpr float_t  MoveDeltaTimeLimit   = 0.15f; // 0.15
     inline constexpr float_t  AppleWinOffset       = -10000000.f; // arbitrary value
     inline const char* const  WindowTitle   = "Snake";
 }
