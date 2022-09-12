@@ -133,12 +133,11 @@ public:
     }
 
 
-    inline bool HandleInput(float deltaTime)
+    inline bool HandleInput(int keyPressed, float deltaTime)
     {
         static float elapsedTime = 0.f;
         elapsedTime += deltaTime;
 
-        const int keyPressed = GetKeyPressed();
         m_LastPressedKey = keyPressed == KEY_NULL ? m_LastPressedKey : keyPressed;
         
         if (elapsedTime >= Const::MoveDeltaTimeLimit)
