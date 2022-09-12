@@ -30,13 +30,13 @@ constexpr std::array<Rectangle, Const::GridSize> GenerateGrid()
 }
 
 
-int GetApplePos(int cells);
-Rectangle GetApple(const Snake& snake);
-int GetCenterXPosText(const std::string& text, int fontSize, uint16_t width);
-int GetCenterYPosText(int fontSize, uint16_t height);
+//int GetApplePos(int cells);
+//Rectangle GetApple(const Snake& snake);
+//int GetCenterXPosText(const std::string& text, int fontSize, uint16_t width);
+//int GetCenterYPosText(int fontSize, uint16_t height);
 
 
-int GetApplePos(int cells)
+inline int GetApplePos(int cells)
 {
     const int value = GetRandomValue(0, cells * Const::CellSize);
     const int modCellSize = value % Const::CellSize;
@@ -54,7 +54,7 @@ int GetApplePos(int cells)
 }
 
 
-Rectangle GetApple(const Snake& snake)
+inline Rectangle GetApple(const Snake& snake)
 {
     Rectangle apple;
     apple.width = Const::CellSize;
@@ -72,14 +72,14 @@ Rectangle GetApple(const Snake& snake)
 }
 
 
-int GetCenterXPosText(const std::string& text, int fontSize, uint16_t width)
+inline int GetCenterXPosText(const std::string& text, int fontSize, uint16_t width)
 {
     const int textLength = MeasureText(text.c_str(), fontSize);
     return static_cast<int>(static_cast<float>(width) / 2.f - static_cast<float>(textLength) / 2.f);
 }
 
 
-int GetCenterYPosText(int fontSize, uint16_t height)
+inline int GetCenterYPosText(int fontSize, uint16_t height)
 {
     return static_cast<int>(static_cast<float>(height) / 2.f - static_cast<float>(fontSize) / 2.f);
 }
