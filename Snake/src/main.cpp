@@ -33,7 +33,7 @@ int main()
     SetExitKey(KEY_NULL);
 
     std::vector<std::unique_ptr<Layer>> layers;
-    PushBackLayer<Game>(layers);
+    PushBackLayer<Game>(layers); // Game first since the menu is rendered on top of the grid
     PushBackLayer<Menu>(layers);
 
     while (!WindowShouldClose())
