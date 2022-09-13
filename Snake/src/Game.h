@@ -9,6 +9,7 @@
 #include "DisplayText.h"
 #include "Constants.h"
 #include "Score.h"
+#include "Layer.h"
 
 
 static constexpr std::array<Rectangle, Const::GridSize> GenerateGrid()
@@ -68,7 +69,7 @@ inline Rectangle GetApple(const Snake& snake)
 }
 
 
-class Game final
+class Game final : public Layer
 {
 private:
     static constexpr std::array<Rectangle, Const::GridSize> grid = GenerateGrid();
