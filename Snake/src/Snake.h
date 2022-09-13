@@ -75,7 +75,7 @@ private:
         }
     }
 public:
-    explicit Snake(uint16_t xStartPos, uint16_t yStartPos)
+    inline explicit Snake(uint16_t xStartPos, uint16_t yStartPos)
         : m_XStart(xStartPos), m_YStart(yStartPos)
     {
         m_Parts.reserve(Const::GridSize + 1);

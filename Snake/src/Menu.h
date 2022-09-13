@@ -10,12 +10,12 @@ class Menu final : public Layer
 private:
     DisplayText m_Text{"W|A|S|D", Const::DoneFontSize, RAYWHITE};
 public:
-    Menu()
+    inline Menu()
     {
         m_Text.Center(Const::WindowWidth, Const::WindowHeight);
     }
 
-    void OnKeyPress(int keyPressed, float) override
+    inline void OnKeyPress(int keyPressed, float) override
     {
         switch (keyPressed)
         {
@@ -35,7 +35,7 @@ public:
     }
 
 
-    void OnUpdate(float) override 
+    inline void OnUpdate(float) override
     {
         /*
             Gets updated in OnKeyPress()
@@ -43,7 +43,7 @@ public:
     }
 
 
-    void OnRender() const override
+    inline void OnRender() const override
     {
         if(!GameHasStarted())
             m_Text.Draw();

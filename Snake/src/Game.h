@@ -97,7 +97,7 @@ private:
     bool reset = false;
     Color gridColor = s_GridColorDone;
 private:
-    void Finish(bool removeApple = false)
+    inline void Finish(bool removeApple = false)
     {
         if (removeApple)
         {
@@ -110,7 +110,7 @@ private:
     }
 
 
-    void Reset()
+    inline void Reset()
     {
         snake.Reset();
         apple = GetApple(snake);
@@ -120,7 +120,7 @@ private:
     }
 
 
-    bool Started()
+    inline bool Started()
     {
         static bool started = false;
         if (!started && GameHasStarted())
@@ -131,7 +131,7 @@ private:
         return started;
     }
 public:
-    void OnKeyPress(int keyPressed, float dt) override
+    inline void OnKeyPress(int keyPressed, float dt) override
     {
         if (!finished && snake.HandleInput(keyPressed, dt))
             Finish();
@@ -141,7 +141,7 @@ public:
     }
 
 
-    void OnUpdate(float dt) override
+    inline void OnUpdate(float dt) override
     {
         if (!Started())
             return;
@@ -168,7 +168,7 @@ public:
     }
 
 
-    void OnRender() const override
+    inline void OnRender() const override
     {
         for (const Rectangle& cell : s_Grid)
             DrawRectangleLinesEx(cell, Const::GridOutlineThickness, gridColor);
