@@ -105,7 +105,7 @@ private:
         reset = true;
     }
 public:
-    void OnKeyPress(int keyPressed, float dt)
+    void OnKeyPress(int keyPressed, float dt) override
     {
         if (!finished && snake.HandleInput(keyPressed, dt))
             Finish();
@@ -115,7 +115,7 @@ public:
     }
 
 
-    void OnUpdate(float dt) 
+    void OnUpdate(float dt) override
     {
         if (!finished && CheckCollisionRecs(apple, snake.GetHead()))
         {
@@ -139,7 +139,7 @@ public:
     }
 
 
-    void OnRender() const
+    void OnRender() const override
     {
         for (const Rectangle& cell : grid)
             DrawRectangleLinesEx(cell, Const::GridOutlineThickness, gridColor);
