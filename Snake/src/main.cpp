@@ -18,7 +18,7 @@ template <class T> constexpr void PushBackLayer(std::vector<std::unique_ptr<Laye
 
 
 template <class Func, class... Args>
-constexpr void ForEachLayer(const std::vector<std::unique_ptr<Layer>>& layers, const Func& func, Args&&... args)
+void ForEachLayer(const std::vector<std::unique_ptr<Layer>>& layers, const Func& func, Args&&... args)
 {
     for (const std::unique_ptr<Layer>& layer : layers)
         (layer.get()->*func)(std::forward<Args>(args)...);
