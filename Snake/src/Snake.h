@@ -6,7 +6,7 @@
 
 #include "Constants.h"
 
-class Snake
+class Snake final
 {
 private:
     std::vector<Rectangle> m_Parts;

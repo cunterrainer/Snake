@@ -68,7 +68,7 @@ inline Rectangle GetApple(const Snake& snake)
 }
 
 
-class Game
+class Game final
 {
 private:
     static constexpr std::array<Rectangle, Const::GridSize> grid = GenerateGrid();

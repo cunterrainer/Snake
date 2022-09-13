@@ -3,7 +3,7 @@
 #include "DisplayText.h"
 #include "Constants.h"
 
-class EndText
+class EndText final
 {
 private:
     DisplayText m_Text{ "Failed!", Const::DoneFontSize, RED };

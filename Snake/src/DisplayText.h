@@ -5,7 +5,7 @@
 
 #include "raylib.h"
 
-class DisplayText
+class DisplayText final
 {
 private:
     static constexpr int s_DefaultFontSize = 10;

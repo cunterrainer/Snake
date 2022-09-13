@@ -3,7 +3,7 @@
 #include "DisplayText.h"
 #include "Constants.h"
 
-class Score
+class Score final
 {
 private:
     uint32_t m_Score = 0;
