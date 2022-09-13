@@ -69,10 +69,24 @@ inline Rectangle GetApple(const Snake& snake)
 }
 
 
+inline bool& GameSetStarted()
+{
+    static bool started = false;
+    return started;
+}
+
+
+inline bool GameHasStarted()
+{
+    return GameSetStarted();
+}
+
+
 class Game final : public Layer
 {
 private:
-    static constexpr std::array<Rectangle, Const::GridSize> grid = GenerateGrid();
+    static constexpr std::array<Rectangle, Const::GridSize> s_Grid = GenerateGrid();
+    static constexpr Color s_GridColorDone{ 255, 255, 255, 75 };
 
     Snake snake{ Const::CellSize * (Const::BoardWidth / 2), Const::CellSize * (Const::BoardHeight / 2) };
     Rectangle apple = GetApple(snake);
@@ -81,7 +95,7 @@ private:
     EndText doneTxt;
     bool finished = false;
     bool reset = false;
-    Color gridColor = WHITE;
+    Color gridColor = s_GridColorDone;
 private:
     void Finish(bool removeApple = false)
     {
@@ -92,7 +106,7 @@ private:
         }
 
         finished = true;
-        gridColor = { 255, 255, 255, 75 };
+        gridColor = s_GridColorDone;
     }
 
 
@@ -103,6 +117,18 @@ private:
 
         score = 0;
         reset = true;
+    }
+
+
+    bool Started()
+    {
+        static bool started = false;
+        if (!started && GameHasStarted())
+        {
+            gridColor = WHITE;
+            started = true;
+        }
+        return started;
     }
 public:
     void OnKeyPress(int keyPressed, float dt) override
@@ -117,6 +143,9 @@ public:
 
     void OnUpdate(float dt) override
     {
+        if (!Started())
+            return;
+
         if (!finished && CheckCollisionRecs(apple, snake.GetHead()))
         {
             if (!snake.Append())
@@ -141,7 +170,7 @@ public:
 
     void OnRender() const override
     {
-        for (const Rectangle& cell : grid)
+        for (const Rectangle& cell : s_Grid)
             DrawRectangleLinesEx(cell, Const::GridOutlineThickness, gridColor);
         DrawRectangleRec(apple, RED);
         snake.Draw();

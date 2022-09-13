@@ -2,26 +2,50 @@
 
 #include "Layer.h"
 #include "DisplayText.h"
+#include "Constants.h"
+#include "Game.h"
 
 class Menu final : public Layer
 {
 private:
-    DisplayText m_Text{"Menu", Const::DoneFontSize, RAYWHITE};
+    DisplayText m_Text{"W|A|S|D", Const::DoneFontSize, RAYWHITE};
 public:
-    void OnKeyPress([[maybe_unused]] int keyPressed, [[maybe_unused]] float dt) override
+    Menu()
     {
+        m_Text.Center(Const::WindowWidth, Const::WindowHeight);
+    }
 
+    void OnKeyPress(int keyPressed, float) override
+    {
+        switch (keyPressed)
+        {
+        case KEY_W:
+        case KEY_UP:
+        case KEY_A:
+        case KEY_LEFT:
+        case KEY_S:
+        case KEY_DOWN:
+        case KEY_D:
+        case KEY_RIGHT:
+            break;
+        default:
+            return;
+        }
+        GameSetStarted() = true;
     }
 
 
-    void OnUpdate([[maybe_unused]]float dt) override
+    void OnUpdate(float) override 
     {
-
+        /*
+            Gets updated in OnKeyPress()
+        */
     }
 
 
     void OnRender() const override
     {
-        m_Text.Draw();
+        if(!GameHasStarted())
+            m_Text.Draw();
     }
 };
