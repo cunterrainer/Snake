@@ -3,8 +3,6 @@ project "Snake"
     cppdialect "C++17"
     flags "FatalWarnings"
 
-    defines "_CRT_SECURE_NO_WARNINGS"
-
     -- gcc* clang* msc*
     filter "toolset:msc*"
         warnings "High" -- High
@@ -86,13 +84,15 @@ project "Snake"
         RaylibDir .. "/include"
     }
 
-    links {
-        "raylib",
-        "Winmm",
-        "gdi32",
-        "shell32",
-        "User32"
-    }
+    links "raylib"
+
+    filter "system:windows"
+        links {
+            "Winmm",
+            "gdi32",
+            "shell32",
+            "User32"
+        }
 
     filter { "configurations:Debug" }
         kind "ConsoleApp"

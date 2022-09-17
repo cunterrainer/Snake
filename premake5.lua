@@ -20,7 +20,7 @@ filter { "platforms:x86" }
     architecture "x86"
 
 filter "system:windows"
-    defines "WINDOWS"
+    defines { "WINDOWS", "_CRT_SECURE_NO_WARNINGS" }
 
 filter { "configurations:Debug" }
     defines "DEBUG"
