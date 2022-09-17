@@ -12,20 +12,6 @@
 #include "EndText.h"
 
 
-template <class T> constexpr void PushBackLayer(std::vector<std::unique_ptr<Layer>>& layers)
-{
-    layers.push_back(std::make_unique<T>());
-}
-
-
-template <class Func, class... Args>
-void ForEachLayer(const std::vector<std::unique_ptr<Layer>>& layers, const Func& func, Args&&... args)
-{
-    for (const std::unique_ptr<Layer>& layer : layers)
-        (layer.get()->*func)(std::forward<Args>(args)...);
-}
-
-
 static constexpr std::array<Rectangle, Const::GridSize> GenerateGrid()
 {
     std::array<Rectangle, Const::GridSize> grid{};
@@ -44,6 +30,12 @@ static constexpr std::array<Rectangle, Const::GridSize> GenerateGrid()
         currentY = endOfLine ? static_cast<uint16_t>(currentY + Const::CellSize) : currentY;
     }
     return grid;
+}
+
+
+template <class T> constexpr void PushBackLayer(std::vector<std::unique_ptr<Layer>>& layers)
+{
+    layers.push_back(std::make_unique<T>());
 }
 
 
