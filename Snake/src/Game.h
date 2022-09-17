@@ -122,11 +122,8 @@ public:
                 ResetApple();
             ++score;
         }
-        else if (CheckCollisionRecs(snake.GetHead(), m_Portal.GetIn()))
-        {
-            snake.SetHead(m_Portal.GetOut());
+        else if (m_Portal.SnakeCollision(snake))
             ResetPortal(true);
-        }
 
         if (m_EmptyCells.size() <= Const::PortalLimit)
             m_Portal.Hide();

@@ -11,24 +11,24 @@
 class Portal
 {
 private:
-    Rectangle m_In { Const::PortalWinOffset, Const::PortalWinOffset, Const::CellSize, Const::CellSize };
-    Rectangle m_Out{ Const::PortalWinOffset, Const::PortalWinOffset, Const::CellSize, Const::CellSize };
+    Rectangle m_First{ Const::PortalWinOffset, Const::PortalWinOffset, Const::CellSize, Const::CellSize };
+    Rectangle m_Second{ Const::PortalWinOffset, Const::PortalWinOffset, Const::CellSize, Const::CellSize };
 public:
-    inline const Rectangle& GetIn()  const { return m_In;  }
-    inline const Rectangle& GetOut() const { return m_Out; }
+    inline const Rectangle& GetFirst()  const { return m_First; }
+    inline const Rectangle& GetSecond() const { return m_Second; }
 
     inline bool Collision(const Rectangle& rect) const
     {
-        return CheckCollisionRecs(rect, m_In) || CheckCollisionRecs(rect, m_Out);
+        return CheckCollisionRecs(rect, m_First) || CheckCollisionRecs(rect, m_Second);
     }
 
 
     inline void Hide()
     {
-        m_In.x  = Const::PortalWinOffset;
-        m_In.y  = Const::PortalWinOffset;
-        m_Out.x = Const::PortalWinOffset;
-        m_Out.y = Const::PortalWinOffset;
+        m_First.x = Const::PortalWinOffset;
+        m_First.y = Const::PortalWinOffset;
+        m_Second.x = Const::PortalWinOffset;
+        m_Second.y = Const::PortalWinOffset;
     }
 
 
@@ -36,17 +36,33 @@ public:
     {
         if (emptyCells.size() > Const::PortalLimit)
         {
-            m_In = Utility::GetRandomCell(emptyCells);
-            m_Out = Utility::GetRandomCell(emptyCells);
+            m_First = Utility::GetRandomCell(emptyCells);
+            m_Second = Utility::GetRandomCell(emptyCells);
         }
         else
             Hide();
     }
 
 
+    inline bool SnakeCollision(Snake& snake) const
+    {
+        if (CheckCollisionRecs(snake.GetHead(), m_First))
+        {
+            snake.SetHead(m_Second);
+            return true;
+        }
+        else if (CheckCollisionRecs(snake.GetHead(), m_Second))
+        {
+            snake.SetHead(m_First);
+            return true;
+        }
+        return false;
+    }
+
+
     inline void Draw() const
     {
-        DrawRectangleRec(m_In, SKYBLUE);
-        DrawRectangleRec(m_Out, DARKBLUE);
+        DrawRectangleRec(m_First, DARKBLUE);
+        DrawRectangleRec(m_Second, DARKBLUE);
     }
 };
