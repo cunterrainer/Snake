@@ -5,7 +5,7 @@
 
 #include "raylib.h"
 
-class DisplayText
+class DisplayText final
 {
 private:
     static constexpr int s_DefaultFontSize = 10;
@@ -16,9 +16,9 @@ private:
     int m_Spacing;
     Color m_Color;
 public:
-    DisplayText(const std::string& text, int fontSize, const Color& color) 
+    inline DisplayText(const std::string& text, int fontSize, const Color& color) 
         : m_Text(text), m_FontSize(fontSize < s_DefaultFontSize ? s_DefaultFontSize : fontSize), m_Spacing(m_FontSize / s_DefaultFontSize), m_Color(color) {}
-    DisplayText(uint32_t value, int fontSize, const Color& color) : DisplayText(std::to_string(value), fontSize, color) {}
+    inline DisplayText(uint32_t value, int fontSize, const Color& color) : DisplayText(std::to_string(value), fontSize, color) {}
 
     inline void CenterX(uint16_t windowWidth)
     {

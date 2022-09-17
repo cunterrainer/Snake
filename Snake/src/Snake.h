@@ -6,7 +6,7 @@
 
 #include "Constants.h"
 
-class Snake
+class Snake final
 {
 private:
     std::vector<Rectangle> m_Parts;
@@ -75,7 +75,7 @@ private:
         }
     }
 public:
-    explicit Snake(uint16_t xStartPos, uint16_t yStartPos)
+    inline explicit Snake(uint16_t xStartPos, uint16_t yStartPos)
         : m_XStart(xStartPos), m_YStart(yStartPos)
     {
         m_Parts.reserve(Const::GridSize + 1);
@@ -87,6 +87,7 @@ public:
 
 
     inline Rectangle GetHead() const { return m_Parts.front(); }
+    inline void SetHead(const Rectangle& rect) { m_Parts.front() = rect; }
     inline bool Append() { m_Parts.push_back(m_OldParts.back()); return m_Parts.size() != Const::GridSize; }
 
 

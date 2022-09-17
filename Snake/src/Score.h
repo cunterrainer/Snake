@@ -1,9 +1,8 @@
 #pragma once
-
 #include "DisplayText.h"
 #include "Constants.h"
 
-class Score
+class Score final
 {
 private:
     uint32_t m_Score = 0;
@@ -15,7 +14,7 @@ private:
         m_Text.CenterX(Const::WindowWidth);
     }
 public:
-    Score() : m_Text(m_Score, Const::ScoreFontSize, DARKGREEN) 
+    inline Score() : m_Text(m_Score, Const::ScoreFontSize, DARKGREEN)
     {
         m_Text.CenterX(Const::WindowWidth);
     }

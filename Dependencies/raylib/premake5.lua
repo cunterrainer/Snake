@@ -2,6 +2,8 @@ project "raylib"
     language "C"
     kind "StaticLib"
 
+    defines "PLATFORM_DESKTOP"
+    
     files {
         "src/**.c",
         "src/**.h"
@@ -15,8 +17,3 @@ project "raylib"
     includedirs {
         "src/external/glfw/include"
     }
-
-
-    filter "system:windows"
-        defines { "_CRT_SECURE_NO_WARNINGS", "PLATFORM_DESKTOP" }
-    filter {}
