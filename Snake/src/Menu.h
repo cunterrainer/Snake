@@ -35,6 +35,8 @@ public:
         case KEY_DOWN:
         case KEY_D:
         case KEY_RIGHT:
+        case KEY_SPACE:
+        case KEY_ENTER:
             break;
         default:
             return;
