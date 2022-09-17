@@ -4,7 +4,6 @@
 #include "Layer.h"
 #include "DisplayText.h"
 #include "Constants.h"
-#include "Game.h"
 
 class Menu final : public Layer
 {

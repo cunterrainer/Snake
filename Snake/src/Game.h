@@ -1,13 +1,11 @@
 #pragma once
 #include <array>
-#include <string>
 
 #include "raylib.h"
 
 #include "Snake.h"
-#include "EndText.h"
-#include "DisplayText.h"
 #include "Constants.h"
+#include "Utility.h"
 #include "Portal.h"
 #include "Score.h"
 #include "Layer.h"

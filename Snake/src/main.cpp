@@ -1,4 +1,3 @@
-#include <array>
 #include <memory>
 #include <vector>
 #include <utility>
@@ -10,6 +9,7 @@
 #include "Layer.h"
 #include "Menu.h"
 #include "Game.h"
+#include "EndText.h"
 
 
 template <class T> constexpr void PushBackLayer(std::vector<std::unique_ptr<Layer>>& layers)

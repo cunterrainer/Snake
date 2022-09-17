@@ -1,5 +1,4 @@
 #pragma once
-
 #include "DisplayText.h"
 #include "Constants.h"
 
