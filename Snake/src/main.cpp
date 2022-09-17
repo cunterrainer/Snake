@@ -9,7 +9,7 @@
 #include "Layer.h"
 #include "Menu.h"
 #include "Game.h"
-#include "EndText.h" // TODO rename
+#include "EndScreen.h"
 #include "PauseMenu.h"
 
 
