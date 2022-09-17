@@ -13,27 +13,6 @@
 #include "Layer.h"
 
 
-static constexpr std::array<Rectangle, Const::GridSize> GenerateGrid()
-{
-    std::array<Rectangle, Const::GridSize> grid{};
-    uint16_t currentX = 0;
-    uint16_t currentY = 0;
-
-    for (size_t i = 0; i < grid.size(); ++i)
-    {
-        grid[i].x = currentX;
-        grid[i].y = currentY;
-        grid[i].width = Const::CellSize;
-        grid[i].height = Const::CellSize;
-
-        const bool endOfLine = (i + 1) % Const::BoardWidth == 0;
-        currentX = endOfLine ? 0 : static_cast<uint16_t>(currentX + Const::CellSize);
-        currentY = endOfLine ? static_cast<uint16_t>(currentY + Const::CellSize) : currentY;
-    }
-    return grid;
-}
-
-
 inline Rectangle GetApple(const Snake& snake)
 {
     Rectangle apple;
@@ -60,8 +39,8 @@ private:
     Portal m_Portal{snake};
 
     Score score;
+    LayerStage m_Stage = LayerStage::NotDone;
     bool m_Won = false;
-    bool finished = false;
 private:
     inline void Finish(bool removeApple = false)
     {
@@ -71,7 +50,7 @@ private:
             apple.y = Const::AppleWinOffset;
         }
 
-        finished = true;
+        m_Stage = LayerStage::Done;
         Reset();
     }
 
@@ -86,20 +65,26 @@ private:
 public:
     inline void SetWin(bool) override 
     {
-        /*Get win value of Menu which always return false as win*/
+        /*Gets win value of Menu which always returns false as win*/
     }
 
 
     inline void OnKeyPress(int keyPressed, float dt) override
     {
-        if (!finished && snake.HandleInput(keyPressed, dt))
+        if (m_Stage != LayerStage::NotDone)
+            return;
+
+        if (snake.HandleInput(keyPressed, dt)) // collision
             Finish();
     }
 
 
     inline void OnUpdate(float) override
     {
-        if (!finished && CheckCollisionRecs(apple, snake.GetHead()))
+        if (m_Stage != LayerStage::NotDone)
+            return;
+
+        if (CheckCollisionRecs(apple, snake.GetHead()))
         {
             if (!snake.Append())
             {
@@ -111,7 +96,7 @@ public:
             ++score;
         }
 
-        if (!finished && CheckCollisionRecs(snake.GetHead(), m_Portal.GetIn()))
+        if (CheckCollisionRecs(snake.GetHead(), m_Portal.GetIn()))
         {
             snake.SetHead(m_Portal.GetOut());
             m_Portal.Reset();
@@ -137,9 +122,8 @@ public:
 
     inline LayerStage Done() override
     {
-        const LayerStage returnStage = finished ? LayerStage::Done : LayerStage::NotDone;
-        if (finished)
-            finished = false;
+        const LayerStage returnStage = m_Stage == LayerStage::Done ? LayerStage::Done : LayerStage::NotDone;
+        m_Stage = LayerStage::NotDone;
         return returnStage;
     }
 };

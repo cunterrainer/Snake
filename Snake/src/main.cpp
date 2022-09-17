@@ -26,6 +26,27 @@ void ForEachLayer(const std::vector<std::unique_ptr<Layer>>& layers, const Func&
 }
 
 
+static constexpr std::array<Rectangle, Const::GridSize> GenerateGrid()
+{
+    std::array<Rectangle, Const::GridSize> grid{};
+    uint16_t currentX = 0;
+    uint16_t currentY = 0;
+
+    for (size_t i = 0; i < grid.size(); ++i)
+    {
+        grid[i].x = currentX;
+        grid[i].y = currentY;
+        grid[i].width = Const::CellSize;
+        grid[i].height = Const::CellSize;
+
+        const bool endOfLine = (i + 1) % Const::BoardWidth == 0;
+        currentX = endOfLine ? 0 : static_cast<uint16_t>(currentX + Const::CellSize);
+        currentY = endOfLine ? static_cast<uint16_t>(currentY + Const::CellSize) : currentY;
+    }
+    return grid;
+}
+
+
 int main()
 {
     static constexpr std::array<Rectangle, Const::GridSize> grid = GenerateGrid();
@@ -38,7 +59,7 @@ int main()
 
     std::vector<std::unique_ptr<Layer>> layers;
     PushBackLayer<Menu>(layers);
-    PushBackLayer<Game>(layers); // Game first since the menu is rendered on top of the grid
+    PushBackLayer<Game>(layers);
     PushBackLayer<EndScreen>(layers);
 
     std::vector<std::unique_ptr<Layer>>::iterator layerIt = layers.begin();
@@ -70,7 +91,6 @@ int main()
             layerIt = std::prev(layerIt);
             currentLayer = layerIt->get();
         }
-
         EndDrawing();
     }
     TerminateWindow();
