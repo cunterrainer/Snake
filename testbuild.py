@@ -2,7 +2,7 @@ from ast import arg
 import os, shutil
 import subprocess as sp
 from termcolor import colored
-from sys import argv
+from sys import argv, platform
 
 
 def cls():
@@ -48,10 +48,18 @@ def main():
             elif arg.lower() == "clang":
                 useClang = True
 
+    if platform == "win32":
+        exePath = "vendor/premake5.exe"
+    elif platform == "linux":
+        exePath = "vendor/premake5"
+    else:
+        print("Unsupported operating system: " + platform)
+        return
+
     cls()
     binDir = "BIN/"
-    gccProc = [["vendor/premake5.exe", "gmake", "--cc=gcc"], ["make", "-j", "config=debug_x64"], ["make", "-j", "config=release_x64"]]
-    clangProc = [["vendor/premake5.exe", "gmake", "--cc=clang"],
+    gccProc = [[exePath, "gmake", "--cc=gcc"], ["make", "-j", "config=debug_x64"], ["make", "-j", "config=release_x64"]]
+    clangProc = [[exePath, "gmake", "--cc=clang"],
                  ["make", "-j", "config=debug_x64"], ["make", "-j", "config=release_x64"],
                  ["make", "-j", "config=debug_x86"], ["make", "-j", "config=release_x86"]]
 
