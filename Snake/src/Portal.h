@@ -1,45 +1,48 @@
 #pragma once
+#include <vector>
+
 #include "raylib.h"
 
 #include "Constants.h"
 #include "Utility.h"
 #include "Snake.h"
 
-// TODO: Portals will spawn even if there are only 2 cells left
+
 class Portal
 {
 private:
-    const Snake& m_SnakeRef;
-    Rectangle m_In = GeneratePortal();
-    Rectangle m_Out = GeneratePortal();
-private:
-    inline Rectangle GeneratePortal() const
-    {
-        Rectangle portal;
-        portal.width = Const::CellSize;
-        portal.height = Const::CellSize;
-
-        // TODO: keep track of empty cells than randomly choose one to spawn the portal,
-        // since this loop can take very long if only 1 cell is left
-        // However we can leave it this way until I encounter that it takes a very long time
-        do
-        {
-            portal.x = static_cast<float>(Utility::GetRandomCell(Const::BoardWidth - 1));
-            portal.y = static_cast<float>(Utility::GetRandomCell(Const::BoardHeight - 1));
-        } while (m_SnakeRef.Collision(portal) || CheckCollisionRecs(portal, m_In));
-        return portal;
-    }
+    Rectangle m_In { Const::PortalWinOffset, Const::PortalWinOffset, Const::CellSize, Const::CellSize };
+    Rectangle m_Out{ Const::PortalWinOffset, Const::PortalWinOffset, Const::CellSize, Const::CellSize };
 public:
-    explicit Portal(const Snake& snake) : m_SnakeRef(snake) {}
-
-    inline const Rectangle& GetIn() const { return m_In; }
+    inline const Rectangle& GetIn()  const { return m_In;  }
     inline const Rectangle& GetOut() const { return m_Out; }
 
-    inline void Reset()
+    inline bool Collision(const Rectangle& rect) const
     {
-        m_In = GeneratePortal();
-        m_Out = GeneratePortal();
+        return CheckCollisionRecs(rect, m_In) || CheckCollisionRecs(rect, m_Out);
     }
+
+
+    inline void Hide()
+    {
+        m_In.x  = Const::PortalWinOffset;
+        m_In.y  = Const::PortalWinOffset;
+        m_Out.x = Const::PortalWinOffset;
+        m_Out.y = Const::PortalWinOffset;
+    }
+
+
+    inline void Reset(std::vector<Rectangle>& emptyCells)
+    {
+        if (emptyCells.size() > Const::PortalLimit)
+        {
+            m_In = Utility::GetRandomCell(emptyCells);
+            m_Out = Utility::GetRandomCell(emptyCells);
+        }
+        else
+            Hide();
+    }
+
 
     inline void Draw() const
     {

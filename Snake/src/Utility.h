@@ -1,25 +1,31 @@
 #pragma once
+#include <array>
+#include <random>
+#include <iterator>
+#include <vector>
+
 #include "raylib.h"
 
 #include "Constants.h"
 
 namespace Utility
 {
-    inline int GetRandomCell(int cells)
+    inline std::vector<Rectangle>::iterator GetRandomIterator(std::vector<Rectangle>::iterator start, std::vector<Rectangle>::iterator end)
     {
-        const int value = GetRandomValue(0, cells * Const::CellSize);
-        const int modCellSize = value % Const::CellSize;
-        if (modCellSize == 0)
-            return value;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(0, static_cast<int>(std::distance(start, end) - 1));
+        std::advance(start, dis(gen));
+        return start;
+    }
 
-        // e.g. v = 74, cs = 50 => mcs = 24 ==> round down
-        const int remainder = Const::CellSize - modCellSize;
-        if (remainder > Const::CellSize % 2)
-            return value - modCellSize;
 
-        // e.g. v = 76, cs = 50 => mcs = 26 ==> round up
-        // cs - mcs = 24 => v + 24 = 100
-        return value + remainder;
+    inline Rectangle GetRandomCell(std::vector<Rectangle>& emptyCells)
+    {
+        const std::vector<Rectangle>::iterator it = Utility::GetRandomIterator(emptyCells.begin(), emptyCells.end());
+        const Rectangle rect = *it;
+        emptyCells.erase(it);
+        return rect;
     }
 
 
