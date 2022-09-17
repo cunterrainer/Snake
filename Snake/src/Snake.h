@@ -87,6 +87,7 @@ public:
 
 
     inline Rectangle GetHead() const { return m_Parts.front(); }
+    inline void SetHead(const Rectangle& rect) { m_Parts.front() = rect; }
     inline bool Append() { m_Parts.push_back(m_OldParts.back()); return m_Parts.size() != Const::GridSize; }
 
 

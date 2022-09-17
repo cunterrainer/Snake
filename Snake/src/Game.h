@@ -8,6 +8,7 @@
 #include "EndText.h"
 #include "DisplayText.h"
 #include "Constants.h"
+#include "Portal.h"
 #include "Score.h"
 #include "Layer.h"
 
@@ -33,24 +34,6 @@ static constexpr std::array<Rectangle, Const::GridSize> GenerateGrid()
 }
 
 
-inline int GetApplePos(int cells)
-{
-    const int value = GetRandomValue(0, cells * Const::CellSize);
-    const int modCellSize = value % Const::CellSize;
-    if (modCellSize == 0)
-        return value;
-
-    // e.g. v = 74, cs = 50 => mcs = 24 ==> round down
-    const int remainder = Const::CellSize - modCellSize;
-    if (remainder > Const::CellSize % 2)
-        return value - modCellSize;
-
-    // e.g. v = 76, cs = 50 => mcs = 26 ==> round up
-    // cs - mcs = 24 => v + 24 = 100
-    return value + remainder;
-}
-
-
 inline Rectangle GetApple(const Snake& snake)
 {
     Rectangle apple;
@@ -62,8 +45,8 @@ inline Rectangle GetApple(const Snake& snake)
     // However we can leave it this way until I encounter that it takes a very long time
     do
     {
-        apple.x = static_cast<float>(GetApplePos(Const::BoardWidth - 1));
-        apple.y = static_cast<float>(GetApplePos(Const::BoardHeight - 1));
+        apple.x = static_cast<float>(Utility::GetRandomCell(Const::BoardWidth - 1));
+        apple.y = static_cast<float>(Utility::GetRandomCell(Const::BoardHeight - 1));
     } while (snake.Collision(apple));
     return apple;
 }
@@ -90,6 +73,7 @@ private:
 
     Snake snake{ Const::CellSize * (Const::BoardWidth / 2), Const::CellSize * (Const::BoardHeight / 2) };
     Rectangle apple = GetApple(snake);
+    Portal m_Portal{snake};
 
     Score score;
     EndText doneTxt;
@@ -114,6 +98,7 @@ private:
     {
         snake.Reset();
         apple = GetApple(snake);
+        m_Portal.Reset();
 
         score = 0;
         reset = true;
@@ -158,6 +143,12 @@ public:
             ++score;
         }
 
+        if (!finished && CheckCollisionRecs(snake.GetHead(), m_Portal.GetIn()))
+        {
+            snake.SetHead(m_Portal.GetOut());
+            m_Portal.Reset();
+        }
+
 
         if (reset && doneTxt.Reset(dt))
         {
@@ -173,6 +164,7 @@ public:
         for (const Rectangle& cell : s_Grid)
             DrawRectangleLinesEx(cell, Const::GridOutlineThickness, gridColor);
         DrawRectangleRec(apple, RED);
+        m_Portal.Draw();
         snake.Draw();
         score.Draw();
         doneTxt.Draw(finished);
