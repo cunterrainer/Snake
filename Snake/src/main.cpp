@@ -13,27 +13,6 @@
 #include "PauseMenu.h"
 
 
-static constexpr std::array<Rectangle, Const::GridSize> GenerateGrid()
-{
-    std::array<Rectangle, Const::GridSize> grid{};
-    uint16_t currentX = 0;
-    uint16_t currentY = 0;
-
-    for (size_t i = 0; i < grid.size(); ++i)
-    {
-        grid[i].x = currentX;
-        grid[i].y = currentY;
-        grid[i].width = Const::CellSize;
-        grid[i].height = Const::CellSize;
-
-        const bool endOfLine = (i + 1) % Const::BoardWidth == 0;
-        currentX = endOfLine ? 0 : static_cast<uint16_t>(currentX + Const::CellSize);
-        currentY = endOfLine ? static_cast<uint16_t>(currentY + Const::CellSize) : currentY;
-    }
-    return grid;
-}
-
-
 template <class T> constexpr void PushBackLayer(std::vector<std::unique_ptr<Layer>>& layers)
 {
     layers.push_back(std::make_unique<T>());
@@ -42,7 +21,6 @@ template <class T> constexpr void PushBackLayer(std::vector<std::unique_ptr<Laye
 
 int main()
 {
-    static constexpr std::array<Rectangle, Const::GridSize> grid = GenerateGrid();
     static constexpr Color gridColor = { 255, 255, 255, 75 };
     static constexpr Color backgroundColor{ 10, 10, 10, 255 };
 
@@ -65,7 +43,7 @@ int main()
         const float deltaTime = GetFrameTime();
         BeginDrawing();
         ClearBackground(backgroundColor);
-        for (const Rectangle& cell : grid)
+        for (const Rectangle& cell : Const::Grid)
             DrawRectangleLinesEx(cell, Const::GridOutlineThickness, gridColor);
 
         int keyPressed = GetKeyPressed();
