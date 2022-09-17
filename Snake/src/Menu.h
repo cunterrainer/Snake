@@ -1,4 +1,5 @@
 #pragma once
+#include "raylib.h"
 
 #include "Layer.h"
 #include "DisplayText.h"
@@ -9,11 +10,19 @@ class Menu final : public Layer
 {
 private:
     DisplayText m_Text{"W|A|S|D", Const::DoneFontSize, RAYWHITE};
+    LayerStage m_Stage = LayerStage::NotDone;
 public:
     inline Menu()
     {
         m_Text.Center(Const::WindowWidth, Const::WindowHeight);
     }
+
+
+    inline void SetWin(bool) override
+    {
+        /*Will always be false since it's being called before the game layer*/
+    }
+
 
     inline void OnKeyPress(int keyPressed, float) override
     {
@@ -31,7 +40,7 @@ public:
         default:
             return;
         }
-        GameSetStarted() = true;
+        m_Stage = LayerStage::Done;
     }
 
 
@@ -45,7 +54,18 @@ public:
 
     inline void OnRender() const override
     {
-        if(!GameHasStarted())
-            m_Text.Draw();
+        m_Text.Draw();
+    }
+
+
+    inline bool Win() const override
+    { 
+        return false; 
+    }
+
+
+    inline LayerStage Done() override
+    {
+        return m_Stage;
     }
 };

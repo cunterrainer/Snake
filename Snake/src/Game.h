@@ -52,34 +52,16 @@ inline Rectangle GetApple(const Snake& snake)
 }
 
 
-inline bool& GameSetStarted()
-{
-    static bool started = false;
-    return started;
-}
-
-
-inline bool GameHasStarted()
-{
-    return GameSetStarted();
-}
-
-
 class Game final : public Layer
 {
 private:
-    static constexpr std::array<Rectangle, Const::GridSize> s_Grid = GenerateGrid();
-    static constexpr Color s_GridColorDone{ 255, 255, 255, 75 };
-
     Snake snake{ Const::CellSize * (Const::BoardWidth / 2), Const::CellSize * (Const::BoardHeight / 2) };
     Rectangle apple = GetApple(snake);
     Portal m_Portal{snake};
 
     Score score;
-    EndText doneTxt;
+    bool m_Won = false;
     bool finished = false;
-    bool reset = false;
-    Color gridColor = s_GridColorDone;
 private:
     inline void Finish(bool removeApple = false)
     {
@@ -90,7 +72,7 @@ private:
         }
 
         finished = true;
-        gridColor = s_GridColorDone;
+        Reset();
     }
 
 
@@ -99,43 +81,29 @@ private:
         snake.Reset();
         apple = GetApple(snake);
         m_Portal.Reset();
-
         score = 0;
-        reset = true;
-    }
-
-
-    inline bool Started()
-    {
-        static bool started = false;
-        if (!started && GameHasStarted())
-        {
-            gridColor = WHITE;
-            started = true;
-        }
-        return started;
     }
 public:
+    inline void SetWin(bool) override 
+    {
+        /*Get win value of Menu which always return false as win*/
+    }
+
+
     inline void OnKeyPress(int keyPressed, float dt) override
     {
         if (!finished && snake.HandleInput(keyPressed, dt))
             Finish();
-
-        if (finished && keyPressed == KEY_SPACE)
-            Reset();
     }
 
 
-    inline void OnUpdate(float dt) override
+    inline void OnUpdate(float) override
     {
-        if (!Started())
-            return;
-
         if (!finished && CheckCollisionRecs(apple, snake.GetHead()))
         {
             if (!snake.Append())
             {
-                doneTxt.SetWin();
+                m_Won = true;
                 Finish(true);
             }
             else
@@ -148,26 +116,30 @@ public:
             snake.SetHead(m_Portal.GetOut());
             m_Portal.Reset();
         }
-
-
-        if (reset && doneTxt.Reset(dt))
-        {
-            reset = false;
-            finished = false;
-            gridColor = WHITE;
-        }
     }
 
 
     inline void OnRender() const override
     {
-        for (const Rectangle& cell : s_Grid)
-            DrawRectangleLinesEx(cell, Const::GridOutlineThickness, gridColor);
         DrawRectangleRec(apple, RED);
         m_Portal.Draw();
         snake.Draw();
         score.Draw();
-        doneTxt.Draw(finished);
         DrawFPS(0, 0);
+    }
+
+
+    inline bool Win() const override
+    {
+        return m_Won;
+    }
+
+
+    inline LayerStage Done() override
+    {
+        const LayerStage returnStage = finished ? LayerStage::Done : LayerStage::NotDone;
+        if (finished)
+            finished = false;
+        return returnStage;
     }
 };

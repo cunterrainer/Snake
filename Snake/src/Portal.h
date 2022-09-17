@@ -5,6 +5,7 @@
 #include "Utility.h"
 #include "Snake.h"
 
+// TODO: Portals will spawn even if there are only 2 cells left
 class Portal
 {
 private:
