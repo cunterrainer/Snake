@@ -2,7 +2,7 @@
 
 enum class LayerStage
 {
-    NotDone, Done, DoneEndScreen
+    NotDone, Done, DoneEndScreen, DonePause
 };
 
 struct Layer

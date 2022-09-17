@@ -9,7 +9,8 @@
 #include "Layer.h"
 #include "Menu.h"
 #include "Game.h"
-#include "EndText.h"
+#include "EndText.h" // TODO rename
+#include "PauseMenu.h"
 
 
 static constexpr std::array<Rectangle, Const::GridSize> GenerateGrid()
@@ -53,6 +54,7 @@ int main()
     PushBackLayer<Menu>(layers);
     PushBackLayer<Game>(layers);
     PushBackLayer<EndScreen>(layers);
+    std::unique_ptr<Layer> pauseLayer = std::make_unique<PauseMenu>();
 
     std::vector<std::unique_ptr<Layer>>::iterator layerIt = layers.begin();
     Layer* currentLayer = layerIt->get();
@@ -66,8 +68,15 @@ int main()
         for (const Rectangle& cell : grid)
             DrawRectangleLinesEx(cell, Const::GridOutlineThickness, gridColor);
 
+        int keyPressed = GetKeyPressed();
+        if (keyPressed == KEY_ESCAPE && currentLayer != pauseLayer.get())
+        {
+            currentLayer = pauseLayer.get();
+            keyPressed = KEY_NULL;
+        }
+
         currentLayer->SetWin(win);
-        currentLayer->OnKeyPress(GetKeyPressed(), deltaTime);
+        currentLayer->OnKeyPress(keyPressed, deltaTime);
         currentLayer->OnUpdate(deltaTime);
         currentLayer->OnRender();
         win = currentLayer->Win();
@@ -81,6 +90,10 @@ int main()
         else if (stage == LayerStage::DoneEndScreen) 
         {
             layerIt = std::prev(layerIt);
+            currentLayer = layerIt->get();
+        }
+        else if (stage == LayerStage::DonePause)
+        {
             currentLayer = layerIt->get();
         }
         EndDrawing();
