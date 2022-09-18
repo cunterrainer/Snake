@@ -133,6 +133,9 @@ public:
 
     inline void OnRender() const override
     {
+        if (m_Stage != LayerStage::NotDone)
+            return;
+
         m_AppleSprite.Draw(apple);
         m_Portal.Draw();
         m_Walls.Draw();

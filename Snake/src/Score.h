@@ -14,7 +14,7 @@ private:
         m_Text.CenterX(Const::WindowWidth);
     }
 public:
-    inline Score() : m_Text(m_Score, Const::ScoreFontSize, DARKGREEN)
+    inline Score() : m_Text(m_Score, Const::ScoreFontSize, ORANGE)
     {
         m_Text.CenterX(Const::WindowWidth);
     }
