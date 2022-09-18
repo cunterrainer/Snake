@@ -21,4 +21,25 @@ namespace Const {
     inline constexpr float_t  MoveDeltaTimeLimit   = 0.15f; // 0.15
     inline constexpr float_t  AppleWinOffset       = -10000000.f; // arbitrary value
     inline constexpr float_t  PortalWinOffset      =  10000000.f; // arbitrary value
+
+
+    namespace Sprite
+    {
+        inline constexpr Rectangle HeadUp   {   0,    0, 128, 128 };
+        inline constexpr Rectangle HeadDown {   0,  128, 128, 128 };
+        inline constexpr Rectangle HeadRight{ 128,  128, 128, 128 };
+        inline constexpr Rectangle HeadLeft { 128,    0, 128, 128 };
+
+        inline constexpr Rectangle TailUp   {   0,    0, 128, 128 };
+        inline constexpr Rectangle TailDown {   0,  128, 128, 128 };
+        inline constexpr Rectangle TailRight{ 128,  128, 128, 128 };
+        inline constexpr Rectangle TailLeft { 128,    0, 128, 128 };
+
+        inline constexpr Rectangle BodyVertical  {   0,       0, 128, 128 };
+        inline constexpr Rectangle BodyHorizontal{ 128,       0, 128, 128 };
+        inline constexpr Rectangle BodyUpToRight {   0,     128, 128, 128 };
+        inline constexpr Rectangle BodyDownRight { 128,     128, 128, 128 };
+        inline constexpr Rectangle BodyRightUp   {   0, 2 * 128, 128, 128 };
+        inline constexpr Rectangle BodyRightDown { 128, 2 * 128, 128, 128 };
+    }
 }
