@@ -2,6 +2,8 @@
 #include <cstdint>
 #include <cmath>
 
+#include "raylib.h"
+
 namespace Const {
     inline constexpr uint8_t  BoardWidth    = 17;
     inline constexpr uint8_t  BoardHeight   = 17;
