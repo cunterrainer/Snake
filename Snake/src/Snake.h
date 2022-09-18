@@ -13,17 +13,18 @@ class Snake final
 private:
     enum class State
     {
-        Up, Down, Left, Right
+        Up, Down, Left, Right, UpRight, LeftDown, LeftUp, DownRight, RightUp, DownLeft, RightDown, UpLeft
     };
 
-    struct PartState
+    struct Part
     {
         Rectangle pos;
         State state;
+        State drawState;
     };
 
-    std::vector<PartState> m_Parts;
-    std::vector<PartState> m_OldParts;
+    std::vector<Part> m_Parts;
+    std::vector<Part> m_OldParts;
     int m_LastValidPressedKey = 0;
     int m_LastPressedKey = 0;
 
@@ -33,7 +34,7 @@ private:
     Sprite m_HeadSprite;
     Sprite m_BodySprite;
 private:
-    static PartState CreatePart(uint16_t x, uint16_t y)
+    static Part CreatePart(uint16_t x, uint16_t y)
     {
         Rectangle rect;
         rect.x = x;
@@ -44,35 +45,83 @@ private:
     }
 
 
-    inline PartState MoveHead(int keyPressed)
+    inline Part MoveHead(int keyPressed)
     {
         static uint8_t recursionDepth = 0;
         ++recursionDepth;
 
-        PartState head = m_Parts.front();
+        Part head = m_Parts.front();
         switch (keyPressed)
         {
         case KEY_W:
         case KEY_UP:
             head.pos.y -= Const::CellSize;
+            if (head.state == State::Up)
+            {
+                head.drawState = State::Up;
+            }
+            else if (head.state == State::Left)
+            {
+                head.drawState = State::LeftUp;
+            }
+            else if (head.state == State::Right)
+            {
+                head.drawState = State::RightUp;
+            }
             head.state = State::Up;
             m_HeadSprite.Crop(Const::Sprite::HeadUp);
             break;
         case KEY_A:
         case KEY_LEFT:
             head.pos.x -= Const::CellSize;
+            if (head.state == State::Left)
+            {
+                head.drawState = State::Left;
+            }
+            else if (head.state == State::Down)
+            {
+                head.drawState = State::DownLeft;
+            }
+            else if (head.state == State::Up)
+            {
+                head.drawState = State::UpLeft;
+            }
             head.state = State::Left;
             m_HeadSprite.Crop(Const::Sprite::HeadLeft);
             break;
         case KEY_S:
         case KEY_DOWN:
             head.pos.y += Const::CellSize;
+            if (head.state == State::Down)
+            {
+                head.drawState = State::Down;
+            }
+            else if (head.state == State::Left)
+            {
+                head.drawState = State::LeftDown;
+            }
+            else if (head.state == State::Right)
+            {
+                head.drawState = State::RightDown;
+            }
             head.state = State::Down;
             m_HeadSprite.Crop(Const::Sprite::HeadDown);
             break;
         case KEY_D:
         case KEY_RIGHT:
             head.pos.x += Const::CellSize;
+            if (head.state == State::Right)
+            {
+                head.drawState = State::Right;
+            }
+            else if (head.state == State::Up)
+            {
+                head.drawState = State::UpRight;
+            }
+            else if (head.state == State::Down)
+            {
+                head.drawState = State::DownRight;
+            }
             head.state = State::Right;
             m_HeadSprite.Crop(Const::Sprite::HeadRight);
             break;
@@ -89,7 +138,7 @@ private:
 
     inline void Move(int keyPressed)
     {
-        const PartState head = MoveHead(keyPressed);
+        const Part head = MoveHead(keyPressed);
         if (Utility::RectanglesAreSame(head.pos, m_Parts.front().pos))
             return;
 
@@ -126,7 +175,7 @@ public:
 
     inline bool Collision(const Rectangle& extRect) const
     {
-        return std::any_of(m_Parts.cbegin(), m_Parts.cend(), [&](const PartState& pState) { return CheckCollisionRecs(extRect, pState.pos); });
+        return std::any_of(m_Parts.cbegin(), m_Parts.cend(), [&](const Part& pState) { return CheckCollisionRecs(extRect, pState.pos); });
     }
 
 
@@ -153,6 +202,8 @@ public:
     {
         m_Parts.clear();
         m_Parts.push_back(CreatePart(m_XStart, m_YStart));
+        m_Parts.push_back(CreatePart(m_XStart, m_YStart + Const::CellSize));
+        m_HeadSprite.Crop(Const::Sprite::HeadUp);
         m_OldParts = m_Parts;
         m_LastValidPressedKey = KEY_NULL;
         m_LastPressedKey = KEY_NULL;
@@ -164,13 +215,30 @@ public:
         m_HeadSprite.Draw(m_Parts.front().pos);
         for (size_t i = 1; i < m_Parts.size(); ++i)
         {
-            if (m_Parts[i].state == State::Up || m_Parts[i].state == State::Down)
+            const State state = m_Parts[i - 1].drawState;
+            if (state == State::Up || state == State::Down)
             {
                 m_BodySprite.Crop(Const::Sprite::BodyVertical);
             }
-            else
+            else if (state == State::Left || state == State::Right)
             {
                 m_BodySprite.Crop(Const::Sprite::BodyHorizontal);
+            }
+            else if (state == State::UpRight || state == State::LeftDown)
+            {
+                m_BodySprite.Crop(Const::Sprite::BodyUpToRight);
+            }
+            else if (state == State::LeftUp || state == State::DownRight)
+            {
+                m_BodySprite.Crop(Const::Sprite::BodyDownRight);
+            }
+            else if (state == State::RightUp || state == State::DownLeft)
+            {
+                m_BodySprite.Crop(Const::Sprite::BodyRightUp);
+            }
+            else if (state == State::RightDown || state == State::UpLeft)
+            {
+                m_BodySprite.Crop(Const::Sprite::BodyRightDown);
             }
             m_BodySprite.Draw(m_Parts[i].pos);
         }
