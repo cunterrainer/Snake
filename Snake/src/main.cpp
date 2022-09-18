@@ -47,11 +47,40 @@ int main()
             DrawRectangleLinesEx(cell, Const::GridOutlineThickness, gridColor);
 
         int keyPressed = GetKeyPressed();
+        if (IsGamepadAvailable(0))
+        {
+            const int gamePadButton = GetGamepadButtonPressed();
+            printf("%d\n", gamePadButton);
+            switch (gamePadButton)
+            {
+            case GAMEPAD_BUTTON_LEFT_FACE_UP:
+                keyPressed = KEY_W;
+                break;
+            case GAMEPAD_BUTTON_LEFT_FACE_RIGHT:
+                keyPressed = KEY_D;
+                break;
+            case GAMEPAD_BUTTON_LEFT_FACE_DOWN:
+                keyPressed = KEY_S;
+                break;
+            case GAMEPAD_BUTTON_LEFT_FACE_LEFT:
+                keyPressed = KEY_A;
+                break;
+            case GAMEPAD_BUTTON_RIGHT_FACE_DOWN:
+                keyPressed = KEY_SPACE;
+                break;
+            case GAMEPAD_BUTTON_MIDDLE_RIGHT:
+                keyPressed = KEY_ESCAPE;
+                break;
+            default:
+                break;
+            }
+        }
         if (keyPressed == KEY_ESCAPE && currentLayer != pauseLayer.get())
         {
             currentLayer = pauseLayer.get();
             keyPressed = KEY_NULL;
         }
+
 
         currentLayer->SetWin(win);
         currentLayer->OnKeyPress(keyPressed, deltaTime);
