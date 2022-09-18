@@ -9,6 +9,8 @@
 #include "Portal.h"
 #include "Score.h"
 #include "Layer.h"
+#include "Sprite.h"
+#include "AppleSprite.h"
 
 
 class Game final : public Layer
@@ -22,6 +24,8 @@ private:
     Score score;
     LayerStage m_Stage = LayerStage::NotDone;
     bool m_Won = false;
+
+    Sprite m_AppleSprite;
 private:
     inline void ResetPortal()
     {
@@ -76,6 +80,8 @@ private:
 public:
     Game()
     {
+        m_AppleSprite.Load(".png", Const::SpriteSheet::RawAppleSpriteData, Const::SpriteSheet::RawAppleSpriteDataRelativeSize);
+        m_AppleSprite.MakeFit();
         m_EmptyCells.reserve(Const::Grid.size());
         SetEmptyCells();
         ResetApple();
@@ -124,7 +130,7 @@ public:
 
     inline void OnRender() const override
     {
-        DrawRectangleRec(apple, RED);
+        m_AppleSprite.Draw(apple);
         m_Portal.Draw();
         snake.Draw();
         score.Draw();
