@@ -49,30 +49,21 @@ int main()
         int keyPressed = GetKeyPressed();
         if (IsGamepadAvailable(0))
         {
-            const int gamePadButton = GetGamepadButtonPressed();
-            switch (gamePadButton)
-            {
-            case GAMEPAD_BUTTON_LEFT_FACE_UP:
+            if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_UP))
                 keyPressed = KEY_W;
-                break;
-            case GAMEPAD_BUTTON_LEFT_FACE_RIGHT:
+            else if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_RIGHT))
                 keyPressed = KEY_D;
-                break;
-            case GAMEPAD_BUTTON_LEFT_FACE_DOWN:
+            else if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_DOWN))
                 keyPressed = KEY_S;
-                break;
-            case GAMEPAD_BUTTON_LEFT_FACE_LEFT:
+            else if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_LEFT))
                 keyPressed = KEY_A;
-                break;
-            case GAMEPAD_BUTTON_RIGHT_FACE_DOWN:
+            else if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN))
                 keyPressed = KEY_SPACE;
-                break;
-            case GAMEPAD_BUTTON_MIDDLE_RIGHT:
+            else if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_MIDDLE_RIGHT))
                 keyPressed = KEY_ESCAPE;
-                break;
-            default:
-                break;
-            }
+            else if(IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_UP))
+                keyPressed = KEY_R;
+
         }
         if (keyPressed == KEY_ESCAPE && currentLayer != pauseLayer.get())
         {

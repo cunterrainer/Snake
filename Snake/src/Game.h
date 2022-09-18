@@ -44,6 +44,12 @@ private:
     inline void Finish()
     {
         m_Stage = LayerStage::Done;
+        Reset();
+    }
+
+
+    inline void Reset()
+    {
         snake.Reset();
         SetEmptyCells();
         m_Walls.Init(m_EmptyCells);
@@ -96,7 +102,10 @@ public:
 
     inline void OnKeyPress(int keyPressed, float dt) override
     {
-        if (snake.HandleInput(keyPressed, dt)) // collision
+        if (keyPressed == KEY_R)
+            Reset();
+
+        else if (snake.HandleInput(keyPressed, dt)) // collision
             Finish();
     }
 
