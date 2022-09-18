@@ -57,17 +57,17 @@ private:
         case KEY_W:
         case KEY_UP:
             head.pos.y -= Const::CellSize;
-            if (head.state == State::Up)
+            switch (head.state)
             {
-                head.drawState = State::Up;
-            }
-            else if (head.state == State::Left)
-            {
+            case State::Left:
                 head.drawState = State::LeftUp;
-            }
-            else if (head.state == State::Right)
-            {
+                break;
+            case State::Right:
                 head.drawState = State::RightUp;
+                break;
+            default:
+                head.drawState = State::Up;
+                break;
             }
             head.state = State::Up;
             m_HeadSprite.Crop(Const::Sprite::HeadUp);
@@ -75,17 +75,17 @@ private:
         case KEY_A:
         case KEY_LEFT:
             head.pos.x -= Const::CellSize;
-            if (head.state == State::Left)
+            switch (head.state)
             {
-                head.drawState = State::Left;
-            }
-            else if (head.state == State::Down)
-            {
+            case State::Down:
                 head.drawState = State::DownLeft;
-            }
-            else if (head.state == State::Up)
-            {
+                break;
+            case State::Up:
                 head.drawState = State::UpLeft;
+                break;
+            default:
+                head.drawState = State::Left;
+                break;
             }
             head.state = State::Left;
             m_HeadSprite.Crop(Const::Sprite::HeadLeft);
@@ -93,17 +93,17 @@ private:
         case KEY_S:
         case KEY_DOWN:
             head.pos.y += Const::CellSize;
-            if (head.state == State::Down)
+            switch (head.state)
             {
-                head.drawState = State::Down;
-            }
-            else if (head.state == State::Left)
-            {
+            case State::Left:
                 head.drawState = State::LeftDown;
-            }
-            else if (head.state == State::Right)
-            {
+                break;
+            case State::Right:
                 head.drawState = State::RightDown;
+                break;
+            default:
+                head.drawState = State::Down;
+                break;
             }
             head.state = State::Down;
             m_HeadSprite.Crop(Const::Sprite::HeadDown);
@@ -111,17 +111,17 @@ private:
         case KEY_D:
         case KEY_RIGHT:
             head.pos.x += Const::CellSize;
-            if (head.state == State::Right)
+            switch (head.state)
             {
-                head.drawState = State::Right;
-            }
-            else if (head.state == State::Up)
-            {
+            case State::Up:
                 head.drawState = State::UpRight;
-            }
-            else if (head.state == State::Down)
-            {
+                break;
+            case State::Down:
                 head.drawState = State::DownRight;
+                break;
+            default:
+                head.drawState = State::Right;
+                break;
             }
             head.state = State::Right;
             m_HeadSprite.Crop(Const::Sprite::HeadRight);
