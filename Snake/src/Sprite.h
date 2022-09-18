@@ -23,6 +23,11 @@ namespace Const::Sprite
     inline constexpr Rectangle HeadRight{ 128,  128, 128, 128 };
     inline constexpr Rectangle HeadLeft { 128,    0, 128, 128 };
 
+    inline constexpr Rectangle TailUp{ 0,    0, 128, 128 };
+    inline constexpr Rectangle TailDown{ 0,  128, 128, 128 };
+    inline constexpr Rectangle TailRight{ 128,  128, 128, 128 };
+    inline constexpr Rectangle TailLeft{ 128,    0, 128, 128 };
+
     inline constexpr Rectangle BodyVertical  {   0, 0, 128, 128 };
     inline constexpr Rectangle BodyHorizontal{ 128, 0, 128, 128 };
     inline constexpr Rectangle BodyUpToRight { 0, 128, 128, 128 };

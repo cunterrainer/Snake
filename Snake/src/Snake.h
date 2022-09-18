@@ -33,6 +33,7 @@ private:
 
     Sprite m_HeadSprite;
     Sprite m_BodySprite;
+    Sprite m_TailSprite;
 private:
     static Part CreatePart(uint16_t x, uint16_t y)
     {
@@ -165,6 +166,9 @@ public:
 
         m_BodySprite.Load("res/bodySprites.png");
         m_BodySprite.Crop(Const::Sprite::BodyVertical);
+
+        m_TailSprite.Load("res/tailSprites.png");
+        m_TailSprite.Crop(Const::Sprite::TailUp);
     }
 
 
@@ -210,38 +214,68 @@ public:
     }
 
 
+    inline void SetBodySpriteCrop(State state) const
+    {
+        if (state == State::Up || state == State::Down)
+        {
+            m_BodySprite.Crop(Const::Sprite::BodyVertical);
+        }
+        else if (state == State::Left || state == State::Right)
+        {
+            m_BodySprite.Crop(Const::Sprite::BodyHorizontal);
+        }
+        else if (state == State::UpRight || state == State::LeftDown)
+        {
+            m_BodySprite.Crop(Const::Sprite::BodyUpToRight);
+        }
+        else if (state == State::LeftUp || state == State::DownRight)
+        {
+            m_BodySprite.Crop(Const::Sprite::BodyDownRight);
+        }
+        else if (state == State::RightUp || state == State::DownLeft)
+        {
+            m_BodySprite.Crop(Const::Sprite::BodyRightUp);
+        }
+        else if (state == State::RightDown || state == State::UpLeft)
+        {
+            m_BodySprite.Crop(Const::Sprite::BodyRightDown);
+        }
+    }
+
+
+    inline void SetTailSpriteCrop(State state) const
+    {
+        switch (state)
+        {
+        case State::Up:
+            m_TailSprite.Crop(Const::Sprite::TailUp);
+            return;
+        case State::Down:
+            m_TailSprite.Crop(Const::Sprite::TailDown);
+            return;
+        case State::Left:
+            m_TailSprite.Crop(Const::Sprite::TailLeft);
+            return;
+        case State::Right:
+            m_TailSprite.Crop(Const::Sprite::TailRight);
+            return;
+        default:
+            return;
+        }
+    }
+
+
     inline void Draw() const
     {
         m_HeadSprite.Draw(m_Parts.front().pos);
-        for (size_t i = 1; i < m_Parts.size(); ++i)
+        for (size_t i = 1; i < m_Parts.size() - 1; ++i)
         {
             const State state = m_Parts[i - 1].drawState;
-            if (state == State::Up || state == State::Down)
-            {
-                m_BodySprite.Crop(Const::Sprite::BodyVertical);
-            }
-            else if (state == State::Left || state == State::Right)
-            {
-                m_BodySprite.Crop(Const::Sprite::BodyHorizontal);
-            }
-            else if (state == State::UpRight || state == State::LeftDown)
-            {
-                m_BodySprite.Crop(Const::Sprite::BodyUpToRight);
-            }
-            else if (state == State::LeftUp || state == State::DownRight)
-            {
-                m_BodySprite.Crop(Const::Sprite::BodyDownRight);
-            }
-            else if (state == State::RightUp || state == State::DownLeft)
-            {
-                m_BodySprite.Crop(Const::Sprite::BodyRightUp);
-            }
-            else if (state == State::RightDown || state == State::UpLeft)
-            {
-                m_BodySprite.Crop(Const::Sprite::BodyRightDown);
-            }
+            SetBodySpriteCrop(state);
             m_BodySprite.Draw(m_Parts[i].pos);
         }
+        SetTailSpriteCrop(m_Parts[m_Parts.size() - 2].state);
+        m_TailSprite.Draw(m_Parts.back().pos);
     }
 
 
