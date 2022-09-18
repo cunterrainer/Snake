@@ -15,9 +15,9 @@ public:
     }
 
 
-    inline void Load(const char* path)
+    inline void Load(const char* fileType, const unsigned char* fileData, int dataSize)
     {
-        m_Image = LoadImage(path);
+        m_Image = LoadImageFromMemory(fileType, fileData, dataSize);
         m_Texture = LoadTextureFromImage(m_Image);
     }
 

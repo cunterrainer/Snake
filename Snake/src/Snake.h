@@ -8,6 +8,12 @@
 #include "Sprite.h"
 #include "Utility.h"
 
+// Spritesheets
+#include "HeadSpriteSheet.h"
+#include "BodySpriteSheet.h"
+#include "TailSpriteSheet.h"
+
+
 class Snake final
 {
 private:
@@ -161,13 +167,13 @@ public:
         m_OldParts = m_Parts;
         m_OldParts.reserve(Const::GridSize + 1);
 
-        m_HeadSprite.Load("res/headSprites.png");
+        m_HeadSprite.Load(".png", Const::SpriteSheet::RawHeadSpriteSheetData, Const::SpriteSheet::RawHeadSpriteSheetDataRelativeSize);
         m_HeadSprite.Crop(Const::Sprite::HeadUp);
 
-        m_BodySprite.Load("res/bodySprites.png");
+        m_BodySprite.Load(".png", Const::SpriteSheet::RawBodySpriteSheetData, Const::SpriteSheet::RawBodySpriteSheetDataRelativeSize);
         m_BodySprite.Crop(Const::Sprite::BodyVertical);
 
-        m_TailSprite.Load("res/tailSprites.png");
+        m_TailSprite.Load(".png", Const::SpriteSheet::RawTailSpriteSheetData, Const::SpriteSheet::RawTailSpriteSheetDataRelativeSize);
         m_TailSprite.Crop(Const::Sprite::TailUp);
     }
 
