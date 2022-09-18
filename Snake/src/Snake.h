@@ -216,29 +216,34 @@ public:
 
     inline void SetBodySpriteCrop(State state) const
     {
-        if (state == State::Up || state == State::Down)
+        switch (state)
         {
+        case State::Up:
+        case State::Down:
             m_BodySprite.Crop(Const::Sprite::BodyVertical);
-        }
-        else if (state == State::Left || state == State::Right)
-        {
+            return;
+        case State::Left:
+        case State::Right:
             m_BodySprite.Crop(Const::Sprite::BodyHorizontal);
-        }
-        else if (state == State::UpRight || state == State::LeftDown)
-        {
+            return;
+        case State::UpRight:
+        case State::LeftDown:
             m_BodySprite.Crop(Const::Sprite::BodyUpToRight);
-        }
-        else if (state == State::LeftUp || state == State::DownRight)
-        {
+            return;
+        case State::LeftUp:
+        case State::DownRight:
             m_BodySprite.Crop(Const::Sprite::BodyDownRight);
-        }
-        else if (state == State::RightUp || state == State::DownLeft)
-        {
+            return;
+        case State::RightUp:
+        case State::DownLeft:
             m_BodySprite.Crop(Const::Sprite::BodyRightUp);
-        }
-        else if (state == State::RightDown || state == State::UpLeft)
-        {
+            return;
+        case State::RightDown:
+        case State::UpLeft:
             m_BodySprite.Crop(Const::Sprite::BodyRightDown);
+            return;
+        default:
+            return;
         }
     }
 
