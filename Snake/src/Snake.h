@@ -5,52 +5,76 @@
 #include "raylib.h"
 
 #include "Constants.h"
+#include "Sprite.h"
+#include "Utility.h"
 
 class Snake final
 {
 private:
-    std::vector<Rectangle> m_Parts;
-    std::vector<Rectangle> m_OldParts;
+    enum class State
+    {
+        Up, Down, Left, Right
+    };
+
+    struct PartState
+    {
+        Rectangle pos;
+        State state;
+    };
+
+    std::vector<PartState> m_Parts;
+    std::vector<PartState> m_OldParts;
     int m_LastValidPressedKey = 0;
     int m_LastPressedKey = 0;
 
     const uint16_t m_XStart;
     const uint16_t m_YStart;
+
+    Sprite m_HeadSprite;
+    Sprite m_BodySprite;
 private:
-    static Rectangle CreatePart(uint16_t x, uint16_t y)
+    static PartState CreatePart(uint16_t x, uint16_t y)
     {
         Rectangle rect;
         rect.x = x;
         rect.y = y;
         rect.width = Const::CellSize;
         rect.height = Const::CellSize;
-        return rect;
+        return { rect, State::Up };
     }
 
 
-    inline Rectangle MoveHead(int keyPressed)
+    inline PartState MoveHead(int keyPressed)
     {
         static uint8_t recursionDepth = 0;
         ++recursionDepth;
 
-        Rectangle head = m_Parts.front();
+        PartState head = m_Parts.front();
         switch (keyPressed)
         {
         case KEY_W:
         case KEY_UP:
-            head.y -= Const::CellSize;
+            head.pos.y -= Const::CellSize;
+            head.state = State::Up;
+            m_HeadSprite.Crop(Const::Sprite::HeadUp);
             break;
         case KEY_A:
         case KEY_LEFT:
-            head.x -= Const::CellSize;
+            head.pos.x -= Const::CellSize;
+            head.state = State::Left;
+            m_HeadSprite.Crop(Const::Sprite::HeadLeft);
             break;
         case KEY_S:
         case KEY_DOWN:
-            head.y += Const::CellSize;
+            head.pos.y += Const::CellSize;
+            head.state = State::Down;
+            m_HeadSprite.Crop(Const::Sprite::HeadDown);
             break;
         case KEY_D:
         case KEY_RIGHT:
-            head.x += Const::CellSize;
+            head.pos.x += Const::CellSize;
+            head.state = State::Right;
+            m_HeadSprite.Crop(Const::Sprite::HeadRight);
             break;
         default:
             if (recursionDepth == 2)
@@ -65,7 +89,9 @@ private:
 
     inline void Move(int keyPressed)
     {
-        const Rectangle head = MoveHead(keyPressed);
+        const PartState head = MoveHead(keyPressed);
+        if (Utility::RectanglesAreSame(head.pos, m_Parts.front().pos))
+            return;
 
         m_OldParts = m_Parts;
         m_Parts.front() = head;
@@ -80,20 +106,27 @@ public:
     {
         m_Parts.reserve(Const::GridSize + 1);
         m_Parts.push_back(CreatePart(xStartPos, yStartPos));
+        m_Parts.push_back(CreatePart(xStartPos, yStartPos + Const::CellSize));
 
         m_OldParts = m_Parts;
         m_OldParts.reserve(Const::GridSize + 1);
+
+        m_HeadSprite.Load("res/headSprites.png");
+        m_HeadSprite.Crop(Const::Sprite::HeadUp);
+
+        m_BodySprite.Load("res/bodySprites.png");
+        m_BodySprite.Crop(Const::Sprite::BodyVertical);
     }
 
 
-    inline Rectangle GetHead() const { return m_Parts.front(); }
-    inline void SetHead(const Rectangle& rect) { m_Parts.front() = rect; }
+    inline Rectangle GetHead() const { return m_Parts.front().pos; }
+    inline void SetHead(const Rectangle& rect) { m_Parts.front().pos = rect; }
     inline bool Append() { m_Parts.push_back(m_OldParts.back()); return m_Parts.size() != Const::GridSize; }
 
 
     inline bool Collision(const Rectangle& extRect) const
     {
-        return std::any_of(m_Parts.cbegin(), m_Parts.cend(), [&](const Rectangle& rect) { return CheckCollisionRecs(extRect, rect); });
+        return std::any_of(m_Parts.cbegin(), m_Parts.cend(), [&](const PartState& pState) { return CheckCollisionRecs(extRect, pState.pos); });
     }
 
 
@@ -102,13 +135,13 @@ public:
         const size_t mPartsSize = m_Parts.size();
         for (size_t i = 0; i < mPartsSize; ++i)
         {
-            const Rectangle& rect = m_Parts[i];
+            const Rectangle& rect = m_Parts[i].pos;
             if (rect.x >= Const::WindowWidth || rect.x < 0 || rect.y >= Const::WindowHeight || rect.y < 0)
                 return true;
 
             for (size_t k = 0; k < mPartsSize; ++k)
             {
-                if(i != k && CheckCollisionRecs(rect, m_Parts[k]))
+                if(i != k && CheckCollisionRecs(rect, m_Parts[k].pos))
                     return true;
             }
         }
@@ -128,9 +161,19 @@ public:
 
     inline void Draw() const
     {
-        for(size_t i = 1; i < m_Parts.size(); ++i)
-            DrawRectangleRec(m_Parts[i], GREEN);
-        DrawRectangleRec(m_Parts.front(), DARKGREEN);
+        m_HeadSprite.Draw(m_Parts.front().pos);
+        for (size_t i = 1; i < m_Parts.size(); ++i)
+        {
+            if (m_Parts[i].state == State::Up || m_Parts[i].state == State::Down)
+            {
+                m_BodySprite.Crop(Const::Sprite::BodyVertical);
+            }
+            else
+            {
+                m_BodySprite.Crop(Const::Sprite::BodyHorizontal);
+            }
+            m_BodySprite.Draw(m_Parts[i].pos);
+        }
     }
 
 
