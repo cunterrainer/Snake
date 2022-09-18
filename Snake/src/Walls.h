@@ -24,7 +24,7 @@ public:
     inline void Init(std::vector<Rectangle>& emptyCells)
     {
         m_Bricks.clear();
-        const size_t numOfBricks = GetRandomValue(Const::BricksMin, Const::BricksMax);
+        const size_t numOfBricks = static_cast<size_t>(GetRandomValue(Const::BricksMin, Const::BricksMax));
         if (emptyCells.size() <= numOfBricks)
             return;
 

@@ -48,7 +48,7 @@ private:
         rect.y = y;
         rect.width = Const::CellSize;
         rect.height = Const::CellSize;
-        return { rect, State::Up };
+        return { rect, State::Up, State::Up };
     }
 
 
@@ -162,7 +162,7 @@ public:
     {
         m_Parts.reserve(Const::GridSize + 1);
         m_Parts.push_back(CreatePart(xStartPos, yStartPos));
-        m_Parts.push_back(CreatePart(xStartPos, yStartPos + Const::CellSize));
+        m_Parts.push_back(CreatePart(xStartPos, static_cast<uint16_t>(yStartPos + Const::CellSize)));
 
         m_OldParts = m_Parts;
         m_OldParts.reserve(Const::GridSize + 1);
@@ -212,7 +212,7 @@ public:
     {
         m_Parts.clear();
         m_Parts.push_back(CreatePart(m_XStart, m_YStart));
-        m_Parts.push_back(CreatePart(m_XStart, m_YStart + Const::CellSize));
+        m_Parts.push_back(CreatePart(m_XStart, static_cast<uint16_t>(m_YStart + Const::CellSize)));
         m_HeadSprite.Crop(Const::Sprite::HeadUp);
         m_OldParts = m_Parts;
         m_LastValidPressedKey = KEY_NULL;
