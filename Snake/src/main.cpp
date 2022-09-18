@@ -50,7 +50,6 @@ int main()
         if (IsGamepadAvailable(0))
         {
             const int gamePadButton = GetGamepadButtonPressed();
-            printf("%d\n", gamePadButton);
             switch (gamePadButton)
             {
             case GAMEPAD_BUTTON_LEFT_FACE_UP:
