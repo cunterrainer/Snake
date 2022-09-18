@@ -14,7 +14,10 @@ namespace Utility
     {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis(0, static_cast<int>(std::distance(start, end) - 1));
+        const int distance = static_cast<int>(std::distance(start, end) - 1);
+        if (distance < 0)
+            return start;
+        std::uniform_int_distribution<> dis(0, distance);
         std::advance(start, dis(gen));
         return start;
     }

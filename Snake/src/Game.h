@@ -10,6 +10,7 @@
 #include "Score.h"
 #include "Layer.h"
 #include "Sprite.h"
+#include "Walls.h"
 #include "AppleSprite.h"
 
 
@@ -19,6 +20,7 @@ private:
     Snake snake{ Const::CellSize * (Const::BoardWidth / 2), Const::CellSize * (Const::BoardHeight / 2) };
     Rectangle apple{0, 0, Const::CellSize, Const::CellSize};
     Portal m_Portal;
+    Walls m_Walls;
     std::vector<Rectangle> m_EmptyCells;
 
     Score score;
@@ -42,14 +44,9 @@ private:
     inline void Finish()
     {
         m_Stage = LayerStage::Done;
-        Reset();
-    }
-
-
-    inline void Reset()
-    {
         snake.Reset();
         SetEmptyCells();
+        m_Walls.Init(m_EmptyCells);
         ResetApple();
         ResetPortal();
         score = 0;
@@ -70,7 +67,7 @@ private:
         for (size_t i = 0; i < m_EmptyCells.size(); ++i)
         {
             const Rectangle& cell = m_EmptyCells[i];
-            if (CheckCollisionRecs(apple, cell) || m_Portal.Collision(cell) || snake.Collision(cell))
+            if (CheckCollisionRecs(apple, cell) || m_Portal.Collision(cell) || m_Walls.Collision(cell) || snake.Collision(cell))
             {
                 m_EmptyCells.erase(m_EmptyCells.begin() + static_cast<std::vector<Rectangle>::const_iterator::difference_type>(i));
                 --i;
@@ -83,7 +80,9 @@ public:
         m_AppleSprite.Load(".png", Const::SpriteSheet::RawAppleSpriteData, Const::SpriteSheet::RawAppleSpriteDataRelativeSize);
         m_AppleSprite.MakeFit();
         m_EmptyCells.reserve(Const::Grid.size());
+
         SetEmptyCells();
+        m_Walls.Init(m_EmptyCells);
         ResetApple();
         ResetPortal();
     }
@@ -125,6 +124,10 @@ public:
             SetEmptyCells();
             ResetPortal();
         }
+        else if (m_Walls.Collision(snake.GetHead()))
+        {
+            Finish();
+        }
     }
 
 
@@ -132,6 +135,7 @@ public:
     {
         m_AppleSprite.Draw(apple);
         m_Portal.Draw();
+        m_Walls.Draw();
         snake.Draw();
         score.Draw();
         DrawFPS(0, 0);

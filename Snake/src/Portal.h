@@ -76,7 +76,5 @@ public:
     {
         m_PortalSprite.Draw(m_First);
         m_PortalSprite.Draw(m_Second);
-        //DrawRectangleRec(m_First, DARKBLUE);
-        //DrawRectangleRec(m_Second, DARKBLUE);
     }
 };

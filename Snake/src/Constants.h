@@ -9,7 +9,8 @@ namespace Const {
     inline constexpr uint8_t  ScoreFontSize = 45;
     inline constexpr uint8_t  DoneFontSize  = 150;
     inline constexpr uint8_t  CellSize      = 50;
-    inline constexpr uint8_t  PortalLimit   = 15;
+    inline constexpr uint8_t  BricksMin     = 2;
+    inline constexpr uint8_t  BricksMax     = 7;
     inline constexpr uint16_t GridSize      = BoardWidth * BoardHeight;
     inline constexpr uint16_t WindowWidth   = BoardWidth * CellSize;
     inline constexpr uint16_t WindowHeight  = BoardHeight * CellSize;
