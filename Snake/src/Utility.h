@@ -29,6 +29,12 @@ namespace Utility
     }
 
 
+    inline bool RectanglesAreSame(const Rectangle& rect1, const Rectangle& rect2)
+    {
+        return rect1.x == rect2.x && rect1.y == rect2.y && rect1.width == rect2.width && rect1.height == rect2.height;
+    }
+
+
     constexpr std::array<Rectangle, Const::GridSize> GenerateGrid()
     {
         std::array<Rectangle, Const::GridSize> grid{};
