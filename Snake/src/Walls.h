@@ -6,12 +6,21 @@
 
 #include "Constants.h"
 #include "Utility.h"
+#include "Sprite.h"
+#include "WallSprite.h"
 
 class Walls
 {
 private:
     std::vector<Rectangle> m_Bricks;
+    Sprite m_WallSprite;
 public:
+    inline Walls()
+    {
+        m_WallSprite.Load(".png", Const::SpriteSheet::RawWallSpriteData, Const::SpriteSheet::RawWallSpriteDataRelativeSize);
+        m_WallSprite.MakeFit();
+    }
+
     inline void Init(std::vector<Rectangle>& emptyCells)
     {
         m_Bricks.clear();
@@ -33,8 +42,6 @@ public:
     inline void Draw() const
     {
         for (const Rectangle& rec : m_Bricks)
-        {
-            DrawRectangleRec(rec, GRAY);
-        }
+            m_WallSprite.Draw(rec);
     }
 };
