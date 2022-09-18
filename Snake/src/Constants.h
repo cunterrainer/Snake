@@ -39,5 +39,10 @@ namespace Const {
         inline constexpr Rectangle BodyDownRight { 128,     128, 128, 128 };
         inline constexpr Rectangle BodyRightUp   {   0, 2 * 128, 128, 128 };
         inline constexpr Rectangle BodyRightDown { 128, 2 * 128, 128, 128 };
+
+        inline constexpr Rectangle PortalBlue  {   0, 0, 290, 570 };
+        inline constexpr Rectangle PortalRed   { 300, 0, 290, 570 };
+        inline constexpr Rectangle PortalViolet{ 600, 0, 290, 570 };
+        inline constexpr Rectangle PortalGreen { 900, 0, 290, 570 };
     }
 }
