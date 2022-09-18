@@ -11,8 +11,8 @@
 class Portal
 {
 private:
-    Rectangle m_First{ Const::PortalWinOffset, Const::PortalWinOffset, Const::CellSize, Const::CellSize };
-    Rectangle m_Second{ Const::PortalWinOffset, Const::PortalWinOffset, Const::CellSize, Const::CellSize };
+    Rectangle m_First { 0, 0, Const::CellSize, Const::CellSize };
+    Rectangle m_Second{ 0, 0, Const::CellSize, Const::CellSize };
 public:
     inline const Rectangle& GetFirst()  const { return m_First; }
     inline const Rectangle& GetSecond() const { return m_Second; }
@@ -23,24 +23,10 @@ public:
     }
 
 
-    inline void Hide()
-    {
-        m_First.x = Const::PortalWinOffset;
-        m_First.y = Const::PortalWinOffset;
-        m_Second.x = Const::PortalWinOffset;
-        m_Second.y = Const::PortalWinOffset;
-    }
-
-
     inline void Reset(std::vector<Rectangle>& emptyCells)
     {
-        if (emptyCells.size() > Const::PortalLimit)
-        {
-            m_First = Utility::GetRandomCell(emptyCells);
-            m_Second = Utility::GetRandomCell(emptyCells);
-        }
-        else
-            Hide();
+        m_First  = Utility::GetRandomCell(emptyCells);
+        m_Second = Utility::GetRandomCell(emptyCells);
     }
 
 

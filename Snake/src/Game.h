@@ -23,29 +23,20 @@ private:
     LayerStage m_Stage = LayerStage::NotDone;
     bool m_Won = false;
 private:
-    inline void ResetPortal(bool setEmptyCells)
+    inline void ResetPortal()
     {
-        if(setEmptyCells)
-            SetEmptyCells();
         m_Portal.Reset(m_EmptyCells);
     }
 
 
     inline void ResetApple()
     {
-        SetEmptyCells();
         apple = Utility::GetRandomCell(m_EmptyCells);
     }
 
 
-    inline void Finish(bool removeApple = false)
+    inline void Finish()
     {
-        if (removeApple)
-        {
-            apple.x = Const::AppleWinOffset;
-            apple.y = Const::AppleWinOffset;
-        }
-
         m_Stage = LayerStage::Done;
         Reset();
     }
@@ -54,8 +45,9 @@ private:
     inline void Reset()
     {
         snake.Reset();
+        SetEmptyCells();
         ResetApple();
-        ResetPortal(false);
+        ResetPortal();
         score = 0;
     }
 
@@ -85,8 +77,9 @@ public:
     Game()
     {
         m_EmptyCells.reserve(Const::Grid.size());
+        SetEmptyCells();
         ResetApple();
-        ResetPortal(false);
+        ResetPortal();
     }
 
 
@@ -98,9 +91,6 @@ public:
 
     inline void OnKeyPress(int keyPressed, float dt) override
     {
-        if (m_Stage != LayerStage::NotDone)
-            return;
-
         if (snake.HandleInput(keyPressed, dt)) // collision
             Finish();
     }
@@ -113,20 +103,22 @@ public:
 
         if (CheckCollisionRecs(apple, snake.GetHead()))
         {
-            if (!snake.Append())
+            snake.Append();
+            SetEmptyCells();
+            if (m_EmptyCells.empty())
             {
                 m_Won = true;
-                Finish(true);
+                Finish();
             }
             else
                 ResetApple();
             ++score;
         }
         else if (m_Portal.SnakeCollision(snake))
-            ResetPortal(true);
-
-        if (m_EmptyCells.size() <= Const::PortalLimit)
-            m_Portal.Hide();
+        {
+            SetEmptyCells();
+            ResetPortal();
+        }
     }
 
 
