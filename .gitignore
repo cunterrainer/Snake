@@ -1,10 +1,16 @@
-BIN/
-.vs/
 .git/
+.vs/
+.vscode/
+
+BIN/
 
 Makefile
-makefile
+*.make
+*.DS_STORE
+
 *.sln
+
+*.user
 *.vcxproj
 *.vcxproj.user
 *.vcxproj.filters

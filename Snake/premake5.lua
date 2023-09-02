@@ -3,6 +3,10 @@ project "Snake"
     cppdialect "C++17"
     flags "FatalWarnings"
 
+    filter "system:macosx"
+        linkoptions "-framework AppKit -framework iokit -framework OpenGl"
+        disablewarnings { "sign-conversion" }
+
     -- gcc* clang* msc*
     filter "toolset:msc*"
         warnings "High" -- High
@@ -40,6 +44,7 @@ project "Snake"
             "vla",
             "shift-overflow"
         }
+        disablewarnings "unknown-warning-option"
 
     filter "toolset:gcc*"
         warnings "Extra"
