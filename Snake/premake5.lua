@@ -3,10 +3,6 @@ project "Snake"
     cppdialect "C++17"
     flags "FatalWarnings"
 
-    filter "system:macosx"
-        linkoptions "-framework AppKit -framework iokit -framework OpenGl"
-        disablewarnings { "sign-conversion" }
-
     -- gcc* clang* msc*
     filter "toolset:msc*"
         warnings "High" -- High
@@ -92,10 +88,15 @@ project "Snake"
     filter "system:windows"
         links {
             "Winmm",
+            "opengl32",
             "gdi32",
             "shell32",
             "User32"
         }
+
+    filter "system:macosx"
+        linkoptions "-framework AppKit -framework iokit -framework OpenGl"
+        disablewarnings { "sign-conversion" }
 
     filter { "configurations:Debug" }
         kind "ConsoleApp"
