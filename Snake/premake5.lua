@@ -94,6 +94,15 @@ project "Snake"
             "User32"
         }
 
+    filter "system:linux"
+        links {
+            "GL",
+            "X11",
+            "rt",
+            "dl",
+            "m"
+        }
+
     filter "system:macosx"
         linkoptions "-framework AppKit -framework iokit -framework OpenGl"
         disablewarnings { "sign-conversion" }
