@@ -123,10 +123,10 @@ For linking errors, use this example:
 filter "system:linux"
     links {
         "GL",
-        "gdk_pixbuf-2.0",
-        "gtk-3",
-        "gdk-3",
-        "glib-2.0"
+        "X11",
+        "rt",
+        "dl",
+        "m"
     }
 ```
 
@@ -135,10 +135,10 @@ For missing include directories, use this example:
 filter "system:linux"
     links {
         "GL",
-        "gdk_pixbuf-2.0",
-        "gtk-3",
-        "gdk-3",
-        "glib-2.0"
+        "X11",
+        "rt",
+        "dl",
+        "m"
     }
 
     includedirs {
