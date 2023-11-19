@@ -80,13 +80,11 @@ project "Snake"
     }
 
     includedirs {
-        RaylibDir .. "/src",
-        RaylibDir .. "/include"
+        RaylibDir .. "/src"
     }
 
     externalincludedirs {
-        RaylibDir .. "/src",
-        RaylibDir .. "/include"
+        RaylibDir .. "/src"
     }
 
     links "raylib"

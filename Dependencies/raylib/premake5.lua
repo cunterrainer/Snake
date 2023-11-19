@@ -17,10 +17,3 @@ project "raylib"
     includedirs {
         "src/external/glfw/include"
     }
-
-    filter "system:macosx"
-        files "src/rglfw.m"
-        removefiles "src/rglfw.c"
-
-    filter { "toolset:gcc* or toolset:clang*" }
-        disablewarnings "deprecated-declarations"
