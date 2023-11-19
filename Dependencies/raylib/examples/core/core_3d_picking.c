@@ -7,7 +7,7 @@
 *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
 *   BSD-like license that allows static linking with closed source software
 *
-*   Copyright (c) 2015-2023 Ramon Santamaria (@raysan5)
+*   Copyright (c) 2015-2022 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -31,13 +31,16 @@ int main(void)
     camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };      // Camera looking at point
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };          // Camera up vector (rotation towards target)
     camera.fovy = 45.0f;                                // Camera field-of-view Y
-    camera.projection = CAMERA_PERSPECTIVE;             // Camera projection type
+    camera.projection = CAMERA_PERSPECTIVE;                   // Camera mode type
 
     Vector3 cubePosition = { 0.0f, 1.0f, 0.0f };
     Vector3 cubeSize = { 2.0f, 2.0f, 2.0f };
 
     Ray ray = { 0 };                    // Picking line ray
-    RayCollision collision = { 0 };     // Ray collision hit info
+
+    RayCollision collision = { 0 };
+
+    SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
 
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -47,14 +50,7 @@ int main(void)
     {
         // Update
         //----------------------------------------------------------------------------------
-        if (IsCursorHidden()) UpdateCamera(&camera, CAMERA_FIRST_PERSON);
-
-        // Toggle camera controls
-        if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
-        {
-            if (IsCursorHidden()) EnableCursor();
-            else DisableCursor();
-        }
+        UpdateCamera(&camera);
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
@@ -97,11 +93,9 @@ int main(void)
 
             EndMode3D();
 
-            DrawText("Try clicking on the box with your mouse!", 240, 10, 20, DARKGRAY);
+            DrawText("Try selecting the box with mouse!", 240, 10, 20, DARKGRAY);
 
             if (collision.hit) DrawText("BOX SELECTED", (screenWidth - MeasureText("BOX SELECTED", 30)) / 2, (int)(screenHeight * 0.1f), 30, GREEN);
-
-            DrawText("Right click mouse to toggle camera controls", 10, 430, 10, GRAY);
 
             DrawFPS(10, 10);
 

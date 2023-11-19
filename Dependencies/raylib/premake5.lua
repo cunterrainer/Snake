@@ -4,14 +4,13 @@ project "raylib"
     defines "PLATFORM_DESKTOP"
 
     files {
-        "src/**.h",
-        "src/rcore.c",
-        "src/rmodels.c",
-        "src/rshapes.c",
-        "src/rtext.c",
-        "src/rtextures.c",
-        "src/utils.c",
-        "src/rglfw.c",
+        "src/**.c",
+        "src/**.h"
+    }
+
+    removefiles {
+        "src/external/glfw/**.c",
+        "src/external/glfw/**.h"
     }
 
     includedirs {

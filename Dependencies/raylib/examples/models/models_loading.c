@@ -20,7 +20,7 @@
 *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
 *   BSD-like license that allows static linking with closed source software
 *
-*   Copyright (c) 2014-2023 Ramon Santamaria (@raysan5)
+*   Copyright (c) 2014-2022 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -57,9 +57,9 @@ int main(void)
     // NOTE: bounds are calculated from the original size of the model,
     // if model is scaled on drawing, bounds must be also scaled
 
-    bool selected = false;          // Selected object flag
+    SetCameraMode(camera, CAMERA_FREE);     // Set a free camera mode
 
-    DisableCursor();                // Limit cursor to relative movement inside the window
+    bool selected = false;          // Selected object flag
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ int main(void)
     {
         // Update
         //----------------------------------------------------------------------------------
-        UpdateCamera(&camera, CAMERA_FIRST_PERSON);
+        UpdateCamera(&camera);
 
         // Load new models/textures on drag&drop
         if (IsFileDropped())
