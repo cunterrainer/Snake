@@ -9,7 +9,7 @@
 *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
 *   BSD-like license that allows static linking with closed source software
 *
-*   Copyright (c) 2019-2022 Vlad Adrian (@demizdor) and Ramon Santamaria (@raysan5)
+*   Copyright (c) 2019-2023 Vlad Adrian (@demizdor) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -153,7 +153,7 @@ static int hovered = -1, selected = -1;
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
-int main(int argc, char **argv)
+int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -187,16 +187,15 @@ int main(int argc, char **argv)
         // Add a new set of emojis when SPACE is pressed
         if (IsKeyPressed(KEY_SPACE)) RandomizeEmoji();
 
-        // Set the selected emoji and copy its text to clipboard
+        // Set the selected emoji
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && (hovered != -1) && (hovered != selected))
         {
             selected = hovered;
             selectedPos = hoveredPos;
-            SetClipboardText(messages[emoji[selected].message].text);
         }
 
         Vector2 mouse = GetMousePosition();
-        Vector2 pos = { 28.8f, 10.0f };
+        Vector2 position = { 28.8f, 10.0f };
         hovered = -1;
         //----------------------------------------------------------------------------------
 
@@ -211,21 +210,21 @@ int main(int argc, char **argv)
             for (int i = 0; i < SIZEOF(emoji); ++i)
             {
                 const char *txt = &emojiCodepoints[emoji[i].index];
-                Rectangle emojiRect = { pos.x, pos.y, (float)fontEmoji.baseSize, (float)fontEmoji.baseSize };
+                Rectangle emojiRect = { position.x, position.y, (float)fontEmoji.baseSize, (float)fontEmoji.baseSize };
 
                 if (!CheckCollisionPointRec(mouse, emojiRect))
                 {
-                    DrawTextEx(fontEmoji, txt, pos, (float)fontEmoji.baseSize, 1.0f, selected == i ? emoji[i].color : Fade(LIGHTGRAY, 0.4f));
+                    DrawTextEx(fontEmoji, txt, position, (float)fontEmoji.baseSize, 1.0f, selected == i ? emoji[i].color : Fade(LIGHTGRAY, 0.4f));
                 }
                 else
                 {
-                    DrawTextEx(fontEmoji, txt, pos, (float)fontEmoji.baseSize, 1.0f, emoji[i].color );
+                    DrawTextEx(fontEmoji, txt, position, (float)fontEmoji.baseSize, 1.0f, emoji[i].color );
                     hovered = i;
-                    hoveredPos = pos;
+                    hoveredPos = position;
                 }
 
-                if ((i != 0) && (i%EMOJI_PER_WIDTH == 0)) { pos.y += fontEmoji.baseSize + 24.25f; pos.x = 28.8f; }
-                else pos.x += fontEmoji.baseSize + 28.8f;
+                if ((i != 0) && (i%EMOJI_PER_WIDTH == 0)) { position.y += fontEmoji.baseSize + 24.25f; position.x = 28.8f; }
+                else position.x += fontEmoji.baseSize + 28.8f;
             }
             //------------------------------------------------------------------------------
 
@@ -267,6 +266,7 @@ int main(int argc, char **argv)
                     a = b;
                     b = tmp;
                 }
+
                 if (msgRect.x + msgRect.width > screenWidth) msgRect.x -= (msgRect.x + msgRect.width) - screenWidth + 10;
 
                 // Draw chat bubble
@@ -282,8 +282,8 @@ int main(int argc, char **argv)
                 int length = GetCodepointCount(messages[message].text);
                 const char *info = TextFormat("%s %u characters %i bytes", messages[message].language, length, size);
                 sz = MeasureTextEx(GetFontDefault(), info, 10, 1.0f);
-                Vector2 pos = { textRect.x + textRect.width - sz.x,  msgRect.y + msgRect.height - sz.y - 2 };
-                DrawText(info, (int)pos.x, (int)pos.y, 10, RAYWHITE);
+                
+                DrawText(info, (int)(textRect.x + textRect.width - sz.x), (int)(msgRect.y + msgRect.height - sz.y - 2), 10, RAYWHITE);
             }
             //------------------------------------------------------------------------------
 
@@ -341,7 +341,7 @@ static void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, 
 {
     int length = TextLength(text);  // Total length in bytes of the text, scanned by codepoints in loop
 
-    float textOffsetY = 0;          // Offset between lines (on line break '\n')
+    float textOffsetY = 0.0f;       // Offset between lines (on line break '\n')
     float textOffsetX = 0.0f;       // Offset X to next character to draw
 
     float scaleFactor = fontSize/(float)font.baseSize;     // Character rectangle scaling factor

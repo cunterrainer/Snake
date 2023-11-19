@@ -1,5 +1,0 @@
-Renamed: 
-- RLAPI void CloseWindow(void) to RLAPI void TerminateWindow(void)  in "raylib/src/raylib.h"
-- void CloseWindow(void) to void TerminateWindow(void) in "raylib/src/rcore.c"
-
-Reason being that there's a native windows function called CloseWindow() thus the x64 linker can't properly link against this raylib function
