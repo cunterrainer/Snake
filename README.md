@@ -17,6 +17,8 @@ Here, the PS4 controller buttons are used as an example, but other controllers w
 - **△:** Reset the game or create a new level layout.  
 - **OPTIONS:** Pause/resume the game.
 
+If you encounter issues with controller input, please verify that you have selected the correct controller, ensuring it corresponds to the one initially assigned by your PC.
+
 # Build Instructions
 ## Using premake
 This project utilizes Premake as its build system, offering seamless integration with Visual Studio, Clang, and GCC. To set up the project, follow these steps:
