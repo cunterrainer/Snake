@@ -20,6 +20,16 @@ Here, the PS4 controller buttons are used as an example, but other controllers w
 If you encounter issues with controller input, please verify that you have selected the correct controller, ensuring it corresponds to the one initially assigned by your PC.
 
 # Build Instructions
+## Prerequisites
+### Linux
+Following libraries have to be installed and accessible to the current user:
+- xorg (should contain:)
+  - libx11
+  - libxcursor
+  - libxrandr
+  - libxinerama
+  - libxi
+
 ## Using premake
 This project utilizes Premake as its build system, offering seamless integration with Visual Studio, Clang, and GCC. To set up the project, follow these steps:
 
