@@ -17,3 +17,6 @@ project "raylib"
     includedirs {
         "src/external/glfw/include"
     }
+
+    filter "toolset:gcc* or toolset:clang*"
+        disablewarnings "implicit-function-declaration"
