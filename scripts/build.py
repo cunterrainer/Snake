@@ -65,9 +65,9 @@ def main():
     if sys.platform == "win32":
         exePath = "vendor/premake5.exe"
     elif sys.platform == "linux":
-        exePath = "vendor/premake5"
+        exePath = "vendor/premake5linux"
     elif sys.platform == "darwin":
-        exePath = "premake5"
+        exePath = "vendor/premake5mac"
     else:
         print("Unsupported operating system: " + sys.platform)
         return
@@ -75,9 +75,9 @@ def main():
     cls()
     binDir = "BIN/"
 
-    if platform.processor() == "arm":
-        gccProc = [[exePath, "gmake2", "--cc=gcc"], ["make", "-j", "config=debug"], ["make", "-j", "config=release"]]
-        clangProc = [[exePath, "gmake2", "--cc=clang"], ["make", "-j", "config=debug"], ["make", "-j", "config=release"]]
+    if sys.platform == "darwin":
+        gccProc = [[exePath, "gmake2", "--cc=gcc"], ["make", "-j", "config=debug_universal"], ["make", "-j", "config=release_universal"]]
+        clangProc = [[exePath, "gmake2", "--cc=clang"], ["make", "-j", "config=debug_universal"], ["make", "-j", "config=release_universal"]]
     else:
         gccProc = [[exePath, "gmake2", "--cc=gcc"], ["make", "-j", "config=debug_x64"], ["make", "-j", "config=release_x64"]]
         clangProc = [[exePath, "gmake2", "--cc=clang"],
