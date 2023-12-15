@@ -76,11 +76,11 @@ def main():
     binDir = "BIN/"
 
     if platform.processor() == "arm":
-        gccProc = [[exePath, "gmake", "--cc=gcc"], ["make", "-j", "config=debug"], ["make", "-j", "config=release"]]
-        clangProc = [[exePath, "gmake", "--cc=clang"], ["make", "-j", "config=debug"], ["make", "-j", "config=release"]]
+        gccProc = [[exePath, "gmake2", "--cc=gcc"], ["make", "-j", "config=debug"], ["make", "-j", "config=release"]]
+        clangProc = [[exePath, "gmake2", "--cc=clang"], ["make", "-j", "config=debug"], ["make", "-j", "config=release"]]
     else:
-        gccProc = [[exePath, "gmake", "--cc=gcc"], ["make", "-j", "config=debug_x64"], ["make", "-j", "config=release_x64"]]
-        clangProc = [[exePath, "gmake", "--cc=clang"],
+        gccProc = [[exePath, "gmake2", "--cc=gcc"], ["make", "-j", "config=debug_x64"], ["make", "-j", "config=release_x64"]]
+        clangProc = [[exePath, "gmake2", "--cc=clang"],
                      ["make", "-j", "config=debug_x64"], ["make", "-j", "config=release_x64"],
                      ["make", "-j", "config=debug_x86"], ["make", "-j", "config=release_x86"]]
 
