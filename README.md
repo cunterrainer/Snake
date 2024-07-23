@@ -31,6 +31,7 @@ Following libraries have to be installed and accessible to the current user:
   - libxi
 
 ## Using premake
+For the web assembly build, clone the repository then proceed [here](#build-web-assembly).  
 This project utilizes Premake as its build system, offering seamless integration with Visual Studio, Clang, and GCC. To set up the project, follow these steps:
 
 ## Clone the repository
@@ -76,6 +77,12 @@ There are also other compilers available however building has only been tested w
 ``` bash
 make [-j] config=<configuration>
 ```
+
+### Build web assembly
+``` bash
+make -f Makefile.Web [-j] config=<configuration>
+```
+
 Configurations:
  - debug_x86
  - debug_x64 (default, the same as just using `make`)
@@ -85,6 +92,10 @@ Configurations:
 macOS:
  - debug_universal (default, the same as just using `make`)
  - release_universal
+
+web assembly:
+ - debug (default, the same as just using `make`)
+ - release
 
 `-j` flag utilises multi-threaded compilation
 
