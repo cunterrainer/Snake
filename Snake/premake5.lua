@@ -115,4 +115,5 @@ project "Snake"
         kind "WindowedApp"
         entrypoint "mainCRTStartup"
         floatingpoint "fast"
-    filter {}
+        defines "RELEASE"
+filter {}
