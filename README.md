@@ -83,6 +83,7 @@ make [-j] config=<configuration>
 ``` bash
 make -f Makefile.Web [-j] config=<configuration>
 ```
+If you don't like emscriptens default page you can use the provided `Snake.html` in `Snake/src`.
 
 Configurations:
  - debug_x86
