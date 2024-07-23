@@ -80,7 +80,7 @@ all:
 	$(SILENT) mv $(RAYLIB_SRC)/rtextures.o $(RAYLIB_OBJ_DIR)/rtextures.o
 	$(SILENT) mv $(RAYLIB_SRC)/utils.o $(RAYLIB_OBJ_DIR)/utils.o
 	$(SILENT) $(CXX) -o $(SNAKE_OBJ_DIR)/main.o -c Snake/src/main.cpp $(CXX_FLAGS) -I$(RAYLIB_SRC)
-	$(SILENT) $(CXX) -o $(SNAKE_TARGET) $(CXX_FLAGS) $(SNAKE_OBJ_DIR)/main.o $(RAYLIB_TARGET) -s USE_GLFW=3 -s ASYNCIFY
+	$(SILENT) $(CXX) -o $(SNAKE_TARGET) $(CXX_FLAGS) $(SNAKE_OBJ_DIR)/main.o $(RAYLIB_TARGET) -s USE_GLFW=3
 
 
 clean:
