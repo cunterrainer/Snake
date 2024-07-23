@@ -102,7 +102,6 @@ int main()
     static constexpr Color backgroundColor{ 10, 10, 10, 255 };
 
     InitWindow(Const::WindowWidth, Const::WindowHeight, Const::WindowTitle);
-    SetTargetFPS(Const::TargetFPS);
     SetExitKey(KEY_NULL);
 
     std::vector<std::unique_ptr<Layer>> layers;

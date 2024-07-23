@@ -7,7 +7,6 @@
 namespace Const {
     inline constexpr uint8_t  BoardWidth    = 17;
     inline constexpr uint8_t  BoardHeight   = 17;
-    inline constexpr uint8_t  TargetFPS     = 60;
     inline constexpr uint8_t  ScoreFontSize = 45;
     inline constexpr uint8_t  DoneFontSize  = 150;
     inline constexpr uint8_t  CellSize      = 50;
