@@ -63,7 +63,7 @@ else
 endif
 
 
-.PHONY: all clean
+.PHONY: all clean help
 
 all:
 	$(call create_dir,$(RAYLIB_TARGET_DIR))
