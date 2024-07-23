@@ -28,6 +28,7 @@ private:
     bool m_Won = false;
 
     Sprite m_AppleSprite;
+    bool m_ShowFPS = false;
 private:
     inline void ResetPortal()
     {
@@ -102,6 +103,9 @@ public:
 
     inline void OnKeyPress(int keyPressed, float dt) override
     {
+        if (keyPressed == KEY_F)
+            m_ShowFPS = !m_ShowFPS;
+
         if (keyPressed == KEY_R)
             Reset();
 
@@ -150,7 +154,8 @@ public:
         m_Walls.Draw();
         snake.Draw();
         score.Draw();
-        DrawFPS(0, 0);
+        if (m_ShowFPS)
+            DrawFPS(0, 0);
     }
 
 

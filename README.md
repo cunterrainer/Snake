@@ -6,14 +6,15 @@ Welcome to Snake, a classic game with a twist! This version introduces challengi
 # Controls
 ## Keyboard
 - **W/A/S/D or up/down/left/right:** Control the snake's movement.  
-- **Space:** Resume the game after the failed/success screen.
+- **Space:** Resume the game after the failed/success screen.  
 - **R:** Reset the game or create a new level layout.  
+- **F:** Toggle show FPS.  
 - **ESC:** Pause/resume the game.
 
 ## Controller
 Here, the PS4 controller buttons are used as an example, but other controllers will work as well:
 - **DPAD:** Control the snake's movement.  
-- **X:** Resume the game after the failed/success screen.
+- **X:** Resume the game after the failed/success screen.  
 - **△:** Reset the game or create a new level layout.  
 - **OPTIONS:** Pause/resume the game.
 
