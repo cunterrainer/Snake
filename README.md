@@ -1,5 +1,5 @@
 # Snake
-Welcome to Snake, a classic game with a twist! This version introduces challenging elements such as portals and walls, adding a new layer of strategy to the familiar gameplay.
+Welcome to Snake, a classic game with a twist! This version introduces challenging elements such as portals and walls, adding a new layer of strategy to the familiar gameplay. [Try the web build](https://cunterrainer.github.io/Snake/)
 
 ![image info](./docs/preview.PNG)
 
@@ -80,10 +80,11 @@ make [-j] config=<configuration>
 ```
 
 ### Build WebAssembly
+There is already a precompiled build in `docs`, otherwise you have to build it yourself.
 ``` bash
 make -f Makefile.Web [-j] config=<configuration>
 ```
-If you don't like emscriptens default page you can use the provided `Snake.html` in `Snake/src`.
+If you don't like emscriptens default page you can use the provided `index.html` in `docs`.
 
 Configurations:
  - debug_x86
