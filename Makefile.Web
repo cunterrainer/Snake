@@ -11,7 +11,7 @@ endif
 CXX = em++
 
 ifeq ($(config),debug)
-	CXX_FLAGS = -Og -g -DPLATFORM_WEB
+	CXX_FLAGS = -std=c++17 -Og -g -DPLATFORM_WEB
 
 	RAYLIB_TARGET_DIR = BIN/emcc/debug/raylib/bin
 	RAYLIB_OBJ_DIR = BIN/emcc/debug/raylib/bin-int
@@ -24,7 +24,7 @@ ifeq ($(config),debug)
 endif
 
 ifeq ($(config),release)
-	CXX_FLAGS = -O2 -DPLATFORM_WEB
+	CXX_FLAGS = -std=c++17 -O2 -DPLATFORM_WEB
 
 	RAYLIB_TARGET_DIR = BIN/emcc/release/raylib/bin
 	RAYLIB_OBJ_DIR = BIN/emcc/release/raylib/bin-int
