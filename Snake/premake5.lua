@@ -46,7 +46,11 @@ project "Snake"
         buildoptions { "-ffunction-sections", "-fdata-sections" } -- places each function and data item in its own section
         linkoptions { "-Wl,--gc-sections" } -- remove unused sections (code)
 
-    filter { "configurations:Release", "toolset:clang*" }
+    filter { "system:linux or system:macosx", "configurations:Release", "toolset:clang*" }
+        buildoptions { "-ffunction-sections", "-fdata-sections" } -- places each function and data item in its own section
+        linkoptions { "-Wl,--gc-sections" } -- remove unused sections (code)
+
+    filter { "system:windows", "configurations:Release", "toolset:clang*" }
         buildoptions { "-ffunction-sections", "-fdata-sections" } -- places each function and data item in its own section
         linkoptions { "-fuse-ld=lld", "-Wl,/OPT:REF,/OPT:ICF" } -- remove unused sections (code)
 
