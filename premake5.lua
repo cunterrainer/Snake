@@ -34,6 +34,7 @@ filter { "configurations:Release" }
     runtime "Release"
     symbols "off"
     optimize "Speed"
+    flags "LinkTimeOptimization"
 filter {}
 
 -- only for visual studio
