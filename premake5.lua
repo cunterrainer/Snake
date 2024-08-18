@@ -34,6 +34,7 @@ filter { "configurations:Release" }
     runtime "Release"
     symbols "off"
     optimize "Speed"
+    inlining "Auto"
     flags "LinkTimeOptimization"
 filter {}
 
